@@ -1,0 +1,75 @@
+<!-- Sitemap.xml (Google-এর জন্য Website Map)
+Sitemap কী?
+
+Sitemap হলো আপনার Website-এর Index।
+
+এটি Google-কে বলে দেয়—
+
+Website-এ কতগুলো Page আছে।
+কোন Page গুরুত্বপূর্ণ।
+কোন Page আগে Crawl করতে হবে। -->
+
+<?xml version="1.0" encoding="UTF-8"?>
+
+<urlset
+xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+<url>
+
+<loc>https://yourdomain.com/</loc>
+
+<changefreq>weekly</changefreq>
+
+<priority>1.0</priority>
+
+</url>
+
+<url>
+
+<loc>https://yourdomain.com/grammar.html</loc>
+
+<changefreq>weekly</changefreq>
+
+<priority>0.9</priority>
+
+</url>
+
+<url>
+
+<loc>https://yourdomain.com/vocabulary.html</loc>
+
+<changefreq>weekly</changefreq>
+
+<priority>0.9</priority>
+
+</url>
+
+<url>
+
+<loc>https://yourdomain.com/notes.html</loc>
+
+<changefreq>weekly</changefreq>
+
+<priority>0.8</priority>
+
+</url>
+
+</urlset>
+
+<url>
+<loc>https://yourdomain.com/privacy-policy.html</loc>
+<changefreq>yearly</changefreq>
+<priority>0.4</priority>
+</url>
+
+<url>
+<loc>https://yourdomain.com/disclaimer.html</loc>
+<changefreq>yearly</changefreq>
+<priority>0.4</priority>
+</url>
+
+<url>
+<loc>https://yourdomain.com/terms-and-conditions.html</loc>
+<changefreq>yearly</changefreq>
+<priority>0.4</priority>
+</url>
