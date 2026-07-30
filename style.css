@@ -3138,50 +3138,63 @@ footer>p{
    Back To Top Button
 ========================== */
 
-#topBtn{
+/* ==========================================
+BACK TO TOP BUTTON
+========================================== */
 
-    position:fixed;
+#backToTop{
 
-    right:25px;
+position:fixed;
 
-    bottom:25px;
+right:25px;
 
-    width:55px;
+bottom:25px;
 
-    height:55px;
+width:50px;
 
-    border:none;
+height:50px;
 
-    border-radius:50%;
+border:none;
 
-    background:#0b3d91;
+border-radius:50%;
 
-    color:white;
+background:#0b3d91;
 
-    font-size:24px;
+color:white;
 
-    cursor:pointer;
+font-size:22px;
 
-    display:none;
+cursor:pointer;
 
-    z-index:999;
+opacity:0;
 
-    box-shadow:0 10px 25px rgba(0,0,0,.25);
+visibility:hidden;
 
-    transition:.35s;
+transition:.35s;
 
-}
+box-shadow:0 8px 20px rgba(0,0,0,.20);
 
-#topBtn:hover{
-
-    background:#FFD700;
-
-    color:black;
-
-    transform:translateY(-5px);
+z-index:999;
 
 }
 
+
+#backToTop:hover{
+
+background:#ff9800;
+
+transform:translateY(-5px);
+
+}
+
+
+#backToTop.show{
+
+opacity:1;
+
+visibility:visible;
+
+}
 
 /* ==========================
    WhatsApp Button
