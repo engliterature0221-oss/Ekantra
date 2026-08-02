@@ -1,4 +1,6 @@
 
+<!-- buy-wssc.html -->
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -25,8 +27,8 @@ href="images/favicon.png">
 
 </head>
 
-<body data-product="ignou">
-
+<body>
+    
 <section class="checkout">
 
 <h1>
@@ -41,13 +43,15 @@ You are purchasing
 
 </p>
 
-<img src="images/ignou.png"
+<img
+id="product-image"
+src="images/wbssc.png"
 class="checkout-image"
-alt="IGNOU English Notes">
+alt="Product Image">
 
-<h2>
+<h2 id="product-name">
 
-IGNOU English Notes
+WBSSC English Study Material
 
 </h2>
 
@@ -57,7 +61,7 @@ IGNOU English Notes
 
 <span>Product Price</span>
 
-<span>₹249</span>
+<span id="product-price">₹299</span>
 
 </div>
 
@@ -83,7 +87,7 @@ IGNOU English Notes
 
 <span>Total</span>
 
-<span>₹249</span>
+<span id="total-price">₹299</span>
 
 </div>
 
@@ -130,6 +134,13 @@ Accepted Payments
 </div>
 
 </section>
+
+<script src="products.js"></script>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script src="payment.js"></script>
+
 <script src="script.js"></script>
 
 </body>
