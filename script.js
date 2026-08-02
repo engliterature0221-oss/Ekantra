@@ -1067,31 +1067,9 @@ function initializePremiumStore() {
         });
 
     });
-
-
-    /* ==========================================
-       BUY BUTTON
-    ========================================== */
-
-    const buyButtons = $$(".buy-btn");
-
-
-    buyButtons.forEach(function(button){
-
-        button.addEventListener("click",function(){
-
-            // Loading Animation
-
-            button.classList.add("loading");
-
-            button.innerHTML="⏳ Loading...";
-
-        });
-
-    });
-
 }
 
+  
 
 /*
 Website Ready হলে
@@ -1301,5 +1279,6 @@ console.log(
 END OF FILE
 
 Thank You
+==========================================================
 
-==========================================================*/
+*/
