@@ -2,21 +2,33 @@
         SUCCESS PAGE
 ========================================== */
 
+// Read product from URL
+
 const params = new URLSearchParams(window.location.search);
 
 const productId = params.get("product");
 
 const product = PRODUCTS[productId];
 
-if(product){
+// Product Check
 
-    document.getElementById("success-product").innerText =
-    product.name;
+if (!product) {
 
-    document.getElementById("download-btn").href =
-    product.pdf;
+    alert("Invalid Product.");
+
+    window.location.href = "premium-store.html";
 
 }
+
+// Product Name
+
+document.getElementById("success-product").innerText =
+product.name;
+
+// Download Button
+
+document.getElementById("download-btn").href =
+product.pdf;
 
 /* ==========================================
         ORDER ID
@@ -40,4 +52,14 @@ orderId;
 ========================================== */
 
 document.getElementById("purchase-date").innerText =
-now.toLocaleDateString();
+now.toLocaleDateString("en-IN");
+
+/* ==========================================
+        DOWNLOAD MESSAGE
+========================================== */
+
+document.getElementById("download-btn").addEventListener("click",function(){
+
+    alert("Thank you for purchasing.\nYour download will start now.");
+
+});
