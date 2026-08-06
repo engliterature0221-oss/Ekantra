@@ -143,6 +143,95 @@ Delete
 
 </section>
 
+
+<!-- ==========================================
+     ADD PRODUCT MODAL
+========================================== -->
+
+<div id="productModal" class="modal">
+
+<div class="modal-content">
+
+<span class="close-modal">&times;</span>
+
+<h2>Add New Product</h2>
+
+<form id="productForm">
+
+<input
+type="text"
+id="productName"
+placeholder="Product Name"
+required>
+
+<select id="productCategory">
+
+<option>Grammar</option>
+
+<option>MA Notes</option>
+
+<option>BA Notes</option>
+
+<option>WBSSC</option>
+
+<option>IGNOU</option>
+
+<option>NSOU</option>
+
+<option>Assignment</option>
+
+<option>Bundle</option>
+
+</select>
+
+<input
+type="text"
+id="productVersion"
+placeholder="Version (Example: 1.0)"
+required>
+
+<input
+type="number"
+id="productPrice"
+placeholder="Price"
+required>
+
+<textarea
+id="productDescription"
+placeholder="Description"></textarea>
+
+<input
+type="file"
+id="productImage"
+accept="image/*">
+
+<input
+type="file"
+id="productPDF"
+accept=".pdf">
+
+<select id="productStatus">
+
+<option>Active</option>
+
+<option>Inactive</option>
+
+<option>Archived</option>
+
+</select>
+
+<button type="submit">
+
+Save Product
+
+</button>
+
+</form>
+
+</div>
+
+</div>
+
 </main>
 
 </div>
