@@ -1,292 +1,228 @@
-
 /* ==========================================
-        ADMIN LOGIN
+   EKANTRA ADMIN PANEL
+   Version 1.0
 ========================================== */
 
 *{
-
-margin:0;
-
-padding:0;
-
-box-sizing:border-box;
-
-font-family:Arial,sans-serif;
-
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
 }
 
 body{
-
-background:#f5f7fb;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-height:100vh;
-
+    background:#f4f7fc;
+    color:#333;
 }
 
-.login-container{
+/* ==========================
+   Layout
+========================== */
 
-width:400px;
-
-background:#ffffff;
-
-padding:40px;
-
-border-radius:15px;
-
-box-shadow:0 10px 30px rgba(0,0,0,.15);
-
-text-align:center;
-
+.admin-layout{
+    display:flex;
+    min-height:100vh;
 }
 
-.login-container h1{
+/* ==========================
+   Sidebar
+========================== */
 
-color:#0d6efd;
-
-margin-bottom:10px;
-
+.sidebar{
+    width:250px;
+    background:#0d47a1;
+    color:#fff;
+    padding:20px;
 }
 
-.login-container p{
-
-color:#666;
-
-margin-bottom:30px;
-
+.sidebar h2{
+    text-align:center;
+    margin-bottom:30px;
+    font-size:28px;
 }
 
-.login-container input{
-
-width:100%;
-
-padding:14px;
-
-margin-bottom:18px;
-
-border:1px solid #ddd;
-
-border-radius:8px;
-
-font-size:16px;
-
+.sidebar ul{
+    list-style:none;
 }
 
-.login-container input:focus{
-
-outline:none;
-
-border-color:#0d6efd;
-
+.sidebar ul li{
+    margin-bottom:10px;
 }
 
-.login-container button{
-
-width:100%;
-
-padding:14px;
-
-background:#0d6efd;
-
-color:white;
-
-border:none;
-
-border-radius:8px;
-
-font-size:16px;
-
-cursor:pointer;
-
-transition:.3s;
-
+.sidebar ul li a{
+    display:block;
+    text-decoration:none;
+    color:#fff;
+    padding:12px 15px;
+    border-radius:8px;
+    transition:.3s;
 }
 
-.login-container button:hover{
-
-background:#084298;
-
+.sidebar ul li a:hover,
+.sidebar ul li.active a{
+    background:#1565c0;
 }
 
-#login-message{
+/* ==========================
+   Main Content
+========================== */
 
-margin-top:20px;
-
-font-weight:bold;
-
-color:red;
-
+.main-content{
+    flex:1;
 }
 
-/* ==========================================
-        ADMIN DASHBOARD
-========================================== */
+/* ==========================
+   Topbar
+========================== */
 
-.admin-header{
-
-background:#0d6efd;
-
-color:white;
-
-padding:20px;
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
+.topbar{
+    height:70px;
+    background:#fff;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:0 30px;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
 }
 
-.admin-header button{
-
-background:white;
-
-color:#0d6efd;
-
-border:none;
-
-padding:10px 18px;
-
-border-radius:8px;
-
-cursor:pointer;
-
-font-weight:bold;
-
+.topbar h1{
+    font-size:28px;
 }
 
-.dashboard-container{
-
-display:grid;
-
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-
-gap:20px;
-
-padding:30px;
-
+.admin-user{
+    font-weight:bold;
+    color:#0d47a1;
 }
 
-.dashboard-card{
+/* ==========================
+   Content
+========================== */
 
-background:white;
-
-padding:25px;
-
-border-radius:12px;
-
-box-shadow:0 6px 20px rgba(0,0,0,.1);
-
-text-align:center;
-
+.content{
+    padding:30px;
 }
 
-.dashboard-card h2{
-
-margin-bottom:15px;
-
-color:#0d6efd;
-
+.content-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
 }
 
-.dashboard-card p{
-
-font-size:32px;
-
-font-weight:bold;
-
+.content-top input{
+    width:300px;
+    padding:12px;
+    border:1px solid #ccc;
+    border-radius:8px;
 }
 
-/* ==========================================
-        PRODUCTS PAGE
-========================================== */
-
-.product-page{
-
-padding:30px;
-
+.content-top button{
+    background:#0d47a1;
+    color:#fff;
+    border:none;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
 }
 
-.page-top{
-
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
-
-margin-bottom:25px;
-
+.content-top button:hover{
+    background:#1565c0;
 }
 
-.page-top button{
-
-background:#0d6efd;
-
-color:white;
-
-border:none;
-
-padding:12px 20px;
-
-border-radius:8px;
-
-cursor:pointer;
-
-font-weight:bold;
-
-}
+/* ==========================
+   Table
+========================== */
 
 .product-table{
-
-width:100%;
-
-border-collapse:collapse;
-
-background:white;
-
-box-shadow:0 6px 20px rgba(0,0,0,.1);
-
+    width:100%;
+    border-collapse:collapse;
+    background:#fff;
+    border-radius:10px;
+    overflow:hidden;
+    box-shadow:0 5px 15px rgba(0,0,0,.08);
 }
 
 .product-table th{
-
-background:#0d6efd;
-
-color:white;
-
-padding:15px;
-
+    background:#0d47a1;
+    color:#fff;
+    padding:15px;
 }
 
 .product-table td{
-
-padding:15px;
-
-border-bottom:1px solid #ddd;
-
-text-align:center;
-
+    padding:15px;
+    border-bottom:1px solid #eee;
+    text-align:center;
 }
 
-.product-table button{
+/* ==========================
+   Status
+========================== */
 
-background:#198754;
+.status{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:14px;
+    color:#fff;
+}
 
-color:white;
+.status.active{
+    background:#28a745;
+}
 
-border:none;
+.status.inactive{
+    background:#dc3545;
+}
 
-padding:8px 15px;
+/* ==========================
+   Buttons
+========================== */
 
-border-radius:6px;
+.edit-btn{
+    background:#ffc107;
+    color:#000;
+    border:none;
+    padding:8px 15px;
+    border-radius:6px;
+    cursor:pointer;
+    margin-right:5px;
+}
 
-cursor:pointer;
+.delete-btn{
+    background:#dc3545;
+    color:#fff;
+    border:none;
+    padding:8px 15px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+/* ==========================
+   Responsive
+========================== */
+
+@media(max-width:900px){
+
+.admin-layout{
+    flex-direction:column;
+}
+
+.sidebar{
+    width:100%;
+}
+
+.content-top{
+    flex-direction:column;
+    gap:15px;
+}
+
+.content-top input{
+    width:100%;
+}
+
+.product-table{
+    display:block;
+    overflow-x:auto;
+}
 
 }

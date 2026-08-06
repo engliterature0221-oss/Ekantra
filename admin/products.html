@@ -1,12 +1,9 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Products | Ekantra Admin</title>
@@ -17,25 +14,62 @@
 
 <body>
 
-<header class="admin-header">
+<div class="admin-layout">
 
-<h1>Product Management</h1>
+<!-- Sidebar -->
 
-<a href="dashboard.html">
-<button>Dashboard</button>
-</a>
+<aside class="sidebar">
+
+<h2>Ekantra</h2>
+
+<ul>
+
+<li><a href="dashboard.html">📊 Dashboard</a></li>
+
+<li class="active"><a href="products.html">📦 Products</a></li>
+
+<li><a href="orders.html">🛒 Orders</a></li>
+
+<li><a href="customers.html">👥 Customers</a></li>
+
+<li><a href="revenue.html">💰 Revenue</a></li>
+
+<li><a href="settings.html">⚙ Settings</a></li>
+
+<li><a href="login.html">🚪 Logout</a></li>
+
+</ul>
+
+</aside>
+
+<!-- Main -->
+
+<main class="main-content">
+
+<header class="topbar">
+
+<h1>Products Management</h1>
+
+<div class="admin-user">
+
+Administrator
+
+</div>
 
 </header>
 
-<section class="product-page">
+<section class="content">
 
-<div class="page-top">
+<div class="content-top">
 
-<h2>All Products</h2>
+<input
+type="text"
+placeholder="Search Product..."
+id="searchProduct">
 
 <button id="addProductBtn">
 
-+ Add New Product
++ Add Product
 
 </button>
 
@@ -47,7 +81,7 @@
 
 <tr>
 
-<th>Product</th>
+<th>Name</th>
 
 <th>Category</th>
 
@@ -75,31 +109,29 @@
 
 <td>₹299</td>
 
-<td>Active</td>
-
 <td>
 
-<button>Edit</button>
+<span class="status active">
+
+Active
+
+</span>
 
 </td>
 
-</tr>
-
-<tr>
-
-<td>MA English Notes</td>
-
-<td>Notes</td>
-
-<td>1.0</td>
-
-<td>₹399</td>
-
-<td>Active</td>
-
 <td>
 
-<button>Edit</button>
+<button class="edit-btn">
+
+Edit
+
+</button>
+
+<button class="delete-btn">
+
+Delete
+
+</button>
 
 </td>
 
@@ -110,6 +142,10 @@
 </table>
 
 </section>
+
+</main>
+
+</div>
 
 <script src="admin.js"></script>
 
