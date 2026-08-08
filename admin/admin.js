@@ -1,3 +1,4 @@
+
 /* ==========================================
         FIREBASE IMPORT
 ========================================== */
@@ -5,9 +6,12 @@
 import { db } from "../js/firebase-init.js";
 
 import {
-  addDoc,
-  collection,
-  getDocs
+    addDoc,
+    collection,
+    getDocs,
+    getDoc,
+    updateDoc,
+    doc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
 
@@ -52,63 +56,172 @@ window.addEventListener("click", function (event) {
 });
 
 
-//* ==========================================
-        // SAVE PRODUCT
-// ========================================== */
+/* ==========================================
+        SAVE / UPDATE PRODUCT
+========================================== */
 
-const productForm = document.getElementById("productForm");
+const productForm =
+    document.getElementById("productForm");
 
 if (productForm) {
 
-    productForm.addEventListener("submit", async function (e) {
+    productForm.addEventListener(
+        "submit",
+        async function (e) {
 
-        e.preventDefault();
+            e.preventDefault();
 
-        try {
+            const editingProductId =
+                document.getElementById(
+                    "editingProductId"
+                ).value;
 
-            await addDoc(collection(db, "products"), {
+            const productData = {
 
-                name: document.getElementById("productName").value,
+                name:
+                    document.getElementById(
+                        "productName"
+                    ).value,
 
-                category: document.getElementById("productCategory").value,
+                category:
+                    document.getElementById(
+                        "productCategory"
+                    ).value,
 
-                version: document.getElementById("productVersion").value,
+                version:
+                    document.getElementById(
+                        "productVersion"
+                    ).value,
 
-                price: Number(
-                    document.getElementById("productPrice").value
-                ),
+                price:
+                    Number(
+                        document.getElementById(
+                            "productPrice"
+                        ).value
+                    ),
 
                 description:
-                    document.getElementById("productDescription").value,
+                    document.getElementById(
+                        "productDescription"
+                    ).value,
 
                 status:
-                    document.getElementById("productStatus").value,
+                    document.getElementById(
+                        "productStatus"
+                    ).value
 
-                createdAt: new Date()
+            };
 
-            });
 
-            alert("✅ Product Saved Successfully!");
+            try {
 
-            /* Refresh Product Table */
+                /* ==========================================
+                        UPDATE EXISTING PRODUCT
+                ========================================== */
 
-            await loadProducts();
+                if (editingProductId) {
 
-            productForm.reset();
+                    await updateDoc(
 
-            modal.style.display = "none";
+                        doc(
+                            db,
+                            "products",
+                            editingProductId
+                        ),
+
+                        productData
+
+                    );
+
+                    alert(
+                        "✅ Product Updated Successfully!"
+                    );
+
+                }
+
+
+                /* ==========================================
+                        ADD NEW PRODUCT
+                ========================================== */
+
+                else {
+
+                    await addDoc(
+
+                        collection(
+                            db,
+                            "products"
+                        ),
+
+                        {
+                            ...productData,
+                            createdAt: new Date()
+                        }
+
+                    );
+
+                    alert(
+                        "✅ Product Saved Successfully!"
+                    );
+
+                }
+
+
+                /* ==========================================
+                        REFRESH PRODUCT TABLE
+                ========================================== */
+
+                await loadProducts();
+
+
+                /* ==========================================
+                        RESET FORM
+                ========================================== */
+
+                productForm.reset();
+
+                document.getElementById(
+                    "editingProductId"
+                ).value = "";
+
+
+                /* ==========================================
+                        RESET MODAL
+                ========================================== */
+
+                document.getElementById(
+                    "productModalTitle"
+                ).innerText =
+                    "Add New Product";
+
+                document.getElementById(
+                    "saveProductBtn"
+                ).innerText =
+                    "Save Product";
+
+
+                document.getElementById(
+                    "productModal"
+                ).style.display =
+                    "none";
+
+            }
+
+            catch (error) {
+
+                console.error(
+                    "Firestore Save/Update Error:",
+                    error
+                );
+
+                alert(
+                    "❌ Error Saving/Updating Product"
+                );
+
+            }
 
         }
-
-        catch (error) {
-
-            console.error("Firestore Error:", error);
-
-            alert("❌ Error Saving Product");
-
-        }
-
-    });
+    );
 
 }
 
@@ -248,3 +361,104 @@ if (searchProduct) {
     });
 
 }
+
+
+/* ==========================================
+        EDIT PRODUCT - STEP 4B
+========================================== */
+
+document.addEventListener("click", async function (event) {
+
+    if (!event.target.classList.contains("edit-btn")) {
+        return;
+    }
+
+    const productId =
+        event.target.getAttribute("data-id");
+
+    console.log("Editing Product ID:", productId);
+
+    try {
+
+        const productRef =
+            doc(db, "products", productId);
+
+        const productSnap =
+            await getDoc(productRef);
+
+        if (!productSnap.exists()) {
+
+            alert("❌ Product not found");
+
+            return;
+        }
+
+        const product =
+            productSnap.data();
+
+            document.getElementById("editingProductId").value =
+    productId;
+
+        /* ==========================================
+                FILL EDIT FORM
+        ========================================== */
+
+        document.getElementById("productName").value =
+            product.name || "";
+
+        document.getElementById("productCategory").value =
+            product.category || "Grammar";
+
+        document.getElementById("productVersion").value =
+            product.version || "";
+
+        document.getElementById("productPrice").value =
+            product.price || "";
+
+        document.getElementById("productDescription").value =
+            product.description || "";
+
+        document.getElementById("productStatus").value =
+            product.status || "Active";
+
+
+        /* ==========================================
+                CHANGE MODAL TITLE
+        ========================================== */
+
+        document.getElementById("productModalTitle").innerText =
+            "Edit Product";
+
+
+        /* ==========================================
+                CHANGE BUTTON TEXT
+        ========================================== */
+
+        document.getElementById("saveProductBtn").innerText =
+            "Update Product";
+
+
+        /* ==========================================
+                OPEN MODAL
+        ========================================== */
+
+        document.getElementById("productModal").style.display =
+            "flex";
+
+
+        console.log(
+            "Edit Product Loaded Successfully"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Error Loading Product:",
+            error
+        );
+
+    }
+
+});
