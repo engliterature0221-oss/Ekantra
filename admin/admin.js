@@ -11,9 +11,9 @@ import {
     getDocs,
     getDoc,
     updateDoc,
+    deleteDoc,
     doc
 } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
 
 /* ==========================================
         PRODUCT MODAL
@@ -457,6 +457,73 @@ document.addEventListener("click", async function (event) {
         console.error(
             "Error Loading Product:",
             error
+        );
+
+    }
+
+});
+
+
+
+/* ==========================================
+        DELETE PRODUCT - STEP 4
+========================================== */
+
+document.addEventListener("click", async function (event) {
+
+    if (!event.target.classList.contains("delete-btn")) {
+        return;
+    }
+
+    const productId =
+        event.target.getAttribute("data-id");
+
+    const confirmDelete = confirm(
+        "Are you sure you want to delete this product?"
+    );
+
+    if (!confirmDelete) {
+
+        console.log(
+            "Delete Cancelled:",
+            productId
+        );
+
+        return;
+    }
+
+    try {
+
+        await deleteDoc(
+            doc(
+                db,
+                "products",
+                productId
+            )
+        );
+
+        alert(
+            "✅ Product Deleted Successfully!"
+        );
+
+        console.log(
+            "Product Deleted:",
+            productId
+        );
+
+        await loadProducts();
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Error Deleting Product:",
+            error
+        );
+
+        alert(
+            "❌ Error Deleting Product"
         );
 
     }
