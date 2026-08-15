@@ -26,7 +26,7 @@ const PRODUCTS = {
 
         price:199,
 
-        image:"images/bama.png",
+        image:"images/ba&ma-english.png",
 
         pdf:"pdf/bama-notes.pdf"
 
