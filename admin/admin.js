@@ -529,3 +529,546 @@ document.addEventListener("click", async function (event) {
     }
 
 });
+
+/* ==========================================
+        LOAD ORDERS FROM FIRESTORE
+========================================== */
+
+async function loadOrders() {
+
+    const tableBody =
+        document.getElementById("ordersTableBody");
+
+    if (!tableBody) return;
+
+    try {
+
+        const querySnapshot =
+            await getDocs(
+                collection(db, "orders")
+            );
+
+        tableBody.innerHTML = "";
+
+        if (querySnapshot.empty) {
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="7">
+                        No orders found.
+                    </td>
+                </tr>
+            `;
+
+            console.log(
+                "Orders Loaded Successfully: 0"
+            );
+
+            return;
+        }
+
+        querySnapshot.forEach((orderDoc) => {
+
+            const order = orderDoc.data();
+
+            const row =
+                document.createElement("tr");
+
+            row.innerHTML = `
+
+                <td>${orderDoc.id}</td>
+
+                <td>
+                    ${order.customerName || ""}
+                </td>
+
+                <td>
+                    ${order.productName || ""}
+                </td>
+
+                <td>
+                    ₹${order.amount || 0}
+                </td>
+
+               <td>
+
+    <select
+        class="payment-status-select"
+        data-id="${orderDoc.id}">
+
+        <option
+            value="Pending"
+            ${
+                (order.paymentStatus || "Pending") === "Pending"
+                ? "selected"
+                : ""
+            }>
+            Pending
+        </option>
+
+        <option
+            value="Paid"
+            ${
+                order.paymentStatus === "Paid"
+                ? "selected"
+                : ""
+            }>
+            Paid
+        </option>
+
+        <option
+            value="Failed"
+            ${
+                order.paymentStatus === "Failed"
+                ? "selected"
+                : ""
+            }>
+            Failed
+        </option>
+
+    </select>
+
+</td>
+
+                <td>
+
+    <select
+        class="order-status-select"
+        data-id="${orderDoc.id}">
+
+        <option
+            value="Pending"
+            ${
+                (order.orderStatus || "Pending") === "Pending"
+                ? "selected"
+                : ""
+            }>
+            Pending
+        </option>
+
+        <option
+            value="Completed"
+            ${
+                order.orderStatus === "Completed"
+                ? "selected"
+                : ""
+            }>
+            Completed
+        </option>
+
+        <option
+            value="Cancelled"
+            ${
+                order.orderStatus === "Cancelled"
+                ? "selected"
+                : ""
+            }>
+            Cancelled
+        </option>
+
+    </select>
+
+</td>
+
+                <td>
+
+                    <button
+    class="view-order-btn"
+    data-id="${orderDoc.id}">
+    View
+</button>
+
+                </td>
+
+            `;
+
+            tableBody.appendChild(row);
+
+        });
+
+        console.log(
+            "Orders Loaded Successfully:",
+            querySnapshot.size
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Error Loading Orders:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+        INITIAL ORDER LOAD
+========================================== */
+
+loadOrders();
+
+
+/* ==========================================
+        VIEW ORDER DETAILS
+========================================== */
+
+document.addEventListener("click", async function (event) {
+
+    if (!event.target.classList.contains("view-order-btn")) {
+        return;
+    }
+
+    const orderId =
+        event.target.getAttribute("data-id");
+
+    console.log(
+        "Loading Order Details:",
+        orderId
+    );
+
+    try {
+
+        const orderRef =
+            doc(db, "orders", orderId);
+
+        const orderSnap =
+            await getDoc(orderRef);
+
+        if (!orderSnap.exists()) {
+
+            alert("❌ Order not found");
+
+            return;
+        }
+
+        const order =
+            orderSnap.data();
+
+        console.log(
+            "Order Details Loaded:",
+            order
+        );
+
+
+        /* ==========================================
+                SHOW DATA IN MODAL
+        ========================================== */
+
+        const modal =
+            document.getElementById(
+                "orderDetailsModal"
+            );
+
+        if (!modal) {
+
+            console.error(
+                "Order Details Modal Not Found"
+            );
+
+            return;
+        }
+
+
+        document.getElementById(
+            "detailOrderId"
+        ).innerText = orderId;
+
+
+        document.getElementById(
+            "detailCustomer"
+        ).innerText =
+            order.customerName || "";
+
+
+        document.getElementById(
+            "detailProduct"
+        ).innerText =
+            order.productName || "";
+
+
+        document.getElementById(
+            "detailAmount"
+        ).innerText =
+            "₹" + (order.amount || 0);
+
+
+        document.getElementById(
+            "detailPayment"
+        ).innerText =
+            order.paymentStatus || "";
+
+
+        document.getElementById(
+            "detailStatus"
+        ).innerText =
+            order.orderStatus || "Pending";
+
+
+        /* ==========================================
+                OPEN MODAL
+        ========================================== */
+
+        modal.style.display = "flex";
+
+
+        console.log(
+            "Order Details Modal Opened"
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Error Loading Order Details:",
+            error
+        );
+
+    }
+
+});
+
+
+/* ==========================================
+        CLOSE ORDER DETAILS MODAL
+========================================== */
+
+const orderDetailsModal =
+    document.getElementById(
+        "orderDetailsModal"
+    );
+
+
+const closeOrderModal =
+    document.querySelector(
+        ".close-order-modal"
+    );
+
+
+if (closeOrderModal) {
+
+    closeOrderModal.addEventListener(
+        "click",
+        function () {
+
+            orderDetailsModal.style.display =
+                "none";
+
+        }
+    );
+
+}
+
+
+window.addEventListener(
+    "click",
+    function (event) {
+
+        if (
+            event.target ===
+            orderDetailsModal
+        ) {
+
+            orderDetailsModal.style.display =
+                "none";
+
+        }
+
+    }
+);
+
+/* ==========================================
+        ORDER SEARCH
+========================================== */
+
+const searchOrder =
+    document.getElementById("searchOrder");
+
+if (searchOrder) {
+
+    searchOrder.addEventListener(
+        "input",
+        function () {
+
+            const searchText =
+                this.value.toLowerCase().trim();
+
+            const rows =
+                document.querySelectorAll(
+                    "#ordersTableBody tr"
+                );
+
+            rows.forEach(function (row) {
+
+                const orderId =
+                    row.cells[0]?.textContent
+                        .toLowerCase() || "";
+
+                const customer =
+                    row.cells[1]?.textContent
+                        .toLowerCase() || "";
+
+                const product =
+                    row.cells[2]?.textContent
+                        .toLowerCase() || "";
+
+                if (
+                    orderId.includes(searchText) ||
+                    customer.includes(searchText) ||
+                    product.includes(searchText)
+                ) {
+
+                    row.style.display = "";
+
+                } else {
+
+                    row.style.display = "none";
+
+                }
+
+            });
+
+        }
+    );
+
+}
+
+
+/* ==========================================
+        UPDATE ORDER STATUS
+========================================== */
+
+document.addEventListener(
+    "change",
+    async function (event) {
+
+        if (
+            !event.target.classList.contains(
+                "order-status-select"
+            )
+        ) {
+            return;
+        }
+
+        const orderId =
+            event.target.getAttribute("data-id");
+
+        const newStatus =
+            event.target.value;
+
+        console.log(
+            "Updating Order Status:",
+            orderId,
+            newStatus
+        );
+
+        try {
+
+            const orderRef =
+                doc(db, "orders", orderId);
+
+            await updateDoc(
+                orderRef,
+                {
+                    orderStatus: newStatus
+                }
+            );
+
+            console.log(
+                "Order Status Updated Successfully:",
+                newStatus
+            );
+
+            alert(
+                "✅ Order Status Updated Successfully!"
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Error Updating Order Status:",
+                error
+            );
+
+            alert(
+                "❌ Failed to Update Order Status"
+            );
+
+        }
+
+    }
+);
+
+/* ==========================================
+        UPDATE PAYMENT STATUS
+========================================== */
+
+document.addEventListener(
+    "change",
+    async function (event) {
+
+        if (
+            !event.target.classList.contains(
+                "payment-status-select"
+            )
+        ) {
+            return;
+        }
+
+        const orderId =
+            event.target.getAttribute("data-id");
+
+        const newPaymentStatus =
+            event.target.value;
+
+        console.log(
+            "Updating Payment Status:",
+            orderId,
+            newPaymentStatus
+        );
+
+        try {
+
+            const orderRef =
+                doc(db, "orders", orderId);
+
+            await updateDoc(
+                orderRef,
+                {
+                    paymentStatus:
+                        newPaymentStatus
+                }
+            );
+
+            console.log(
+                "Payment Status Updated Successfully:",
+                newPaymentStatus
+            );
+
+            alert(
+                "✅ Payment Status Updated Successfully!"
+            );
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "Error Updating Payment Status:",
+                error
+            );
+
+            alert(
+                "❌ Failed to Update Payment Status"
+            );
+
+        }
+
+    }
+);

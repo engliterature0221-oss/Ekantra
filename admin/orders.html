@@ -1,0 +1,225 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+<title>Orders | Ekantra Admin</title>
+
+<link
+    rel="stylesheet"
+    href="admin.css">
+
+</head>
+
+<body>
+
+<div class="admin-layout">
+
+<!-- ==========================================
+     SIDEBAR
+========================================== -->
+
+<aside class="sidebar">
+
+<h2>Ekantra</h2>
+
+<ul>
+
+<li>
+<a href="dashboard.html">
+📊 Dashboard
+</a>
+</li>
+
+<li>
+<a href="products.html">
+📦 Products
+</a>
+</li>
+
+<li class="active">
+<a href="orders.html">
+🛒 Orders
+</a>
+</li>
+
+<li>
+<a href="customers.html">
+👥 Customers
+</a>
+</li>
+
+<li>
+<a href="revenue.html">
+💰 Revenue
+</a>
+</li>
+
+<li>
+<a href="settings.html">
+⚙ Settings
+</a>
+</li>
+
+<li>
+<a href="login.html">
+🚪 Logout
+</a>
+</li>
+
+</ul>
+
+</aside>
+
+
+<!-- ==========================================
+     MAIN CONTENT
+========================================== -->
+
+<main class="main-content">
+
+<header class="topbar">
+
+<h1>Orders Management</h1>
+
+<div class="admin-user">
+
+Administrator
+
+</div>
+
+</header>
+
+
+<section class="content">
+
+
+<!-- ==========================================
+     SEARCH
+========================================== -->
+
+<div class="content-top">
+
+<input
+    type="text"
+    id="searchOrder"
+    placeholder="Search Order...">
+
+</div>
+
+
+<!-- ==========================================
+     ORDERS TABLE
+========================================== -->
+
+<table class="product-table">
+
+<thead>
+
+<tr>
+
+<th>Order ID</th>
+
+<th>Customer</th>
+
+<th>Product</th>
+
+<th>Amount</th>
+
+<th>Payment</th>
+
+<th>Status</th>
+
+<th>Action</th>
+
+</tr>
+
+</thead>
+
+
+<tbody id="ordersTableBody">
+
+<tr>
+
+<td colspan="7">
+
+No orders found.
+
+</td>
+
+</tr>
+
+</tbody>
+
+</table>
+
+
+</section>
+
+<!-- ==========================================
+     ORDER DETAILS MODAL
+========================================== -->
+
+<div id="orderDetailsModal" class="modal">
+
+    <div class="modal-content">
+
+        <span class="close-order-modal">&times;</span>
+
+        <h2>Order Details</h2>
+
+        <div class="order-details">
+
+            <p>
+                <strong>Order ID:</strong>
+                <span id="detailOrderId"></span>
+            </p>
+
+            <p>
+                <strong>Customer:</strong>
+                <span id="detailCustomer"></span>
+            </p>
+
+            <p>
+                <strong>Product:</strong>
+                <span id="detailProduct"></span>
+            </p>
+
+            <p>
+                <strong>Amount:</strong>
+                <span id="detailAmount"></span>
+            </p>
+
+            <p>
+                <strong>Payment Status:</strong>
+                <span id="detailPayment"></span>
+            </p>
+
+            <p>
+                <strong>Order Status:</strong>
+                <span id="detailStatus"></span>
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+</main>
+
+</div>
+
+
+<script type="module" src="admin.js"></script>
+
+</body>
+
+</html>
