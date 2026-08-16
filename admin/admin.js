@@ -1519,3 +1519,229 @@ document.addEventListener(
 
     }
 );
+
+/* ==========================================
+        MODULE 19 — STEP 16B
+        ORDER SUMMARY STATISTICS
+========================================== */
+
+async function updateOrderSummary() {
+
+    try {
+
+        /* ==========================================
+                GET ORDERS FROM FIRESTORE
+        ========================================== */
+
+        const querySnapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "orders"
+                )
+            );
+
+
+        /* ==========================================
+                INITIAL VALUES
+        ========================================== */
+
+        let totalOrders = 0;
+
+        let pendingOrders = 0;
+
+        let completedOrders = 0;
+
+        let cancelledOrders = 0;
+
+        let totalOrderValue = 0;
+
+
+        /* ==========================================
+                CALCULATE STATISTICS
+        ========================================== */
+
+        querySnapshot.forEach(
+            (orderDoc) => {
+
+                const order =
+                    orderDoc.data();
+
+
+                totalOrders++;
+
+
+                /* ==================================
+                        ORDER STATUS
+                ================================== */
+
+                const status =
+                    order.orderStatus ||
+                    "Pending";
+
+
+                if (
+                    status === "Pending"
+                ) {
+
+                    pendingOrders++;
+
+                }
+
+
+                else if (
+                    status === "Completed"
+                ) {
+
+                    completedOrders++;
+
+                }
+
+
+                else if (
+                    status === "Cancelled"
+                ) {
+
+                    cancelledOrders++;
+
+                }
+
+
+                /* ==================================
+                        ORDER AMOUNT
+                ================================== */
+
+                const amount =
+                    Number(
+                        order.amount || 0
+                    );
+
+
+                /*
+                    Cancelled orders are not
+                    included in total value.
+                */
+
+                if (
+                    status !== "Cancelled"
+                ) {
+
+                    totalOrderValue +=
+                        amount;
+
+                }
+
+            }
+        );
+
+
+        /* ==========================================
+                UPDATE HTML
+        ========================================== */
+
+        const totalOrdersElement =
+            document.getElementById(
+                "totalOrders"
+            );
+
+
+        const pendingOrdersElement =
+            document.getElementById(
+                "pendingOrders"
+            );
+
+
+        const completedOrdersElement =
+            document.getElementById(
+                "completedOrders"
+            );
+
+
+        const cancelledOrdersElement =
+            document.getElementById(
+                "cancelledOrders"
+            );
+
+
+        const totalOrderValueElement =
+            document.getElementById(
+                "totalOrderValue"
+            );
+
+
+        if (totalOrdersElement) {
+
+            totalOrdersElement.innerText =
+                totalOrders;
+
+        }
+
+
+        if (pendingOrdersElement) {
+
+            pendingOrdersElement.innerText =
+                pendingOrders;
+
+        }
+
+
+        if (completedOrdersElement) {
+
+            completedOrdersElement.innerText =
+                completedOrders;
+
+        }
+
+
+        if (cancelledOrdersElement) {
+
+            cancelledOrdersElement.innerText =
+                cancelledOrders;
+
+        }
+
+
+        if (totalOrderValueElement) {
+
+            totalOrderValueElement.innerText =
+                "₹" +
+                totalOrderValue;
+
+        }
+
+
+        /* ==========================================
+                CONSOLE
+        ========================================== */
+
+        console.log(
+            "Order Summary Updated:",
+            {
+                totalOrders,
+                pendingOrders,
+                completedOrders,
+                cancelledOrders,
+                totalOrderValue
+            }
+        );
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Error Updating Order Summary:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+        INITIAL ORDER SUMMARY LOAD
+========================================== */
+
+updateOrderSummary();
