@@ -1745,3 +1745,156 @@ async function updateOrderSummary() {
 ========================================== */
 
 updateOrderSummary();
+
+/* ==========================================
+        MODULE 19 — STEP 17B
+        SUMMARY CARD ORDER FILTER
+========================================== */
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        const summaryCard =
+            event.target.closest(
+                ".summary-card"
+            );
+
+
+        /* ==========================================
+                CHECK SUMMARY CARD
+        ========================================== */
+
+        if (!summaryCard) {
+            return;
+        }
+
+
+        const filter =
+            summaryCard.getAttribute(
+                "data-filter"
+            );
+
+
+        console.log(
+            "Summary Card Filter:",
+            filter
+        );
+
+
+        /* ==========================================
+                GET ORDER TABLE ROWS
+        ========================================== */
+
+        const rows =
+            document.querySelectorAll(
+                "#ordersTableBody tr"
+            );
+
+
+        rows.forEach(
+            function (row) {
+
+                /* Ignore empty/no-order row */
+
+                if (
+                    !row.cells ||
+                    row.cells.length < 6
+                ) {
+
+                    return;
+
+                }
+
+
+                /* ==================================
+                        GET ORDER STATUS
+                ================================== */
+
+                const statusSelect =
+                    row.querySelector(
+                        ".order-status-select"
+                    );
+
+
+                if (!statusSelect) {
+
+                    return;
+
+                }
+
+
+                const orderStatus =
+                    statusSelect.value;
+
+
+                /* ==================================
+                        SHOW ALL ORDERS
+                ================================== */
+
+                if (
+                    filter === "all"
+                ) {
+
+                    row.style.display =
+                        "";
+
+                    return;
+
+                }
+
+
+                /* ==================================
+                        FILTER BY STATUS
+                ================================== */
+
+                if (
+                    orderStatus ===
+                    filter
+                ) {
+
+                    row.style.display =
+                        "";
+
+                }
+
+                else {
+
+                    row.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+
+        /* ==========================================
+                REMOVE ACTIVE CLASS
+        ========================================== */
+
+        document
+            .querySelectorAll(
+                ".summary-card"
+            )
+            .forEach(
+                function (card) {
+
+                    card.classList.remove(
+                        "summary-card-active"
+                    );
+
+                }
+            );
+
+
+        /* ==========================================
+                ADD ACTIVE CLASS
+        ========================================== */
+
+        summaryCard.classList.add(
+            "summary-card-active"
+        );
+
+    }
+);

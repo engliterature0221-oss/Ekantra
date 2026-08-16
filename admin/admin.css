@@ -1008,3 +1008,44 @@ cursor:pointer;
     }
 
 }
+
+
+/* ==========================================
+        MODULE 19 — STEP 17C
+        ACTIVE SUMMARY CARD
+========================================== */
+
+.summary-card {
+    cursor: pointer;
+    user-select: none;
+}
+
+
+/* ==========================================
+        ACTIVE CARD
+========================================== */
+
+.summary-card-active {
+
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 10px 25px rgba(13, 71, 161, 0.20);
+
+    outline: 3px solid rgba(13, 71, 161, 0.15);
+
+}
+
+
+/* ==========================================
+        ACTIVE CARD HOVER
+========================================== */
+
+.summary-card-active:hover {
+
+    transform: translateY(-7px);
+
+    box-shadow:
+        0 12px 28px rgba(13, 71, 161, 0.25);
+
+}
