@@ -718,12 +718,11 @@ async function loadOrders() {
 
                     <td>
 
-                        <select
-                            class="order-status-select"
-                            data-id="${orderDoc.id}"
-                            data-previous-status="${currentOrderStatus}"
-                            ${isCancelled ? "disabled" : ""}>
-
+                        <select 
+    class="order-status-select" 
+    data-id="${orderDoc.id}" 
+    data-previous-status="${currentOrderStatus}">
+    
                             <option
                                 value="Pending"
                                 ${
@@ -1310,6 +1309,7 @@ document.addEventListener(
                 "Order Status Updated Successfully:",
                 newStatus
             );
+            updateOrderSummary();
 
 
             /* Save Current Status */
@@ -1394,6 +1394,8 @@ document.addEventListener(
                 "Payment Status Updated Successfully:",
                 newPaymentStatus
             );
+
+            updatePaymentSummary();
 
             alert(
                 "✅ Payment Status Updated Successfully!"
