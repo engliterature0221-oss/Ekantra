@@ -1898,3 +1898,404 @@ document.addEventListener(
 
     }
 );
+
+/* ==========================================
+        MODULE 19 — STEP 18B
+        PAYMENT SUMMARY STATISTICS
+========================================== */
+
+async function updatePaymentSummary() {
+
+    try {
+
+        /* ==========================================
+                GET ORDERS FROM FIRESTORE
+        ========================================== */
+
+        const querySnapshot =
+            await getDocs(
+                collection(
+                    db,
+                    "orders"
+                )
+            );
+
+
+        /* ==========================================
+                INITIAL VALUES
+        ========================================== */
+
+        let allPayments = 0;
+
+        let paidPayments = 0;
+
+        let pendingPayments = 0;
+
+        let failedPayments = 0;
+
+        let paidRevenue = 0;
+
+
+        /* ==========================================
+                CALCULATE PAYMENT STATISTICS
+        ========================================== */
+
+        querySnapshot.forEach(
+            (orderDoc) => {
+
+                const order =
+                    orderDoc.data();
+
+
+                allPayments++;
+
+
+                const paymentStatus =
+                    order.paymentStatus ||
+                    "Pending";
+
+
+                /* ==================================
+                        PAID
+                ================================== */
+
+                if (
+                    paymentStatus === "Paid"
+                ) {
+
+                    paidPayments++;
+
+
+                    const amount =
+                        Number(
+                            order.amount || 0
+                        );
+
+
+                    paidRevenue +=
+                        amount;
+
+                }
+
+
+                /* ==================================
+                        PENDING
+                ================================== */
+
+                else if (
+                    paymentStatus === "Pending"
+                ) {
+
+                    pendingPayments++;
+
+                }
+
+
+                /* ==================================
+                        FAILED
+                ================================== */
+
+                else if (
+                    paymentStatus === "Failed"
+                ) {
+
+                    failedPayments++;
+
+                }
+
+            }
+        );
+
+
+        /* ==========================================
+                UPDATE HTML
+        ========================================== */
+
+        const allPaymentsElement =
+            document.getElementById(
+                "allPayments"
+            );
+
+
+        const paidPaymentsElement =
+            document.getElementById(
+                "paidPayments"
+            );
+
+
+        const pendingPaymentsElement =
+            document.getElementById(
+                "pendingPayments"
+            );
+
+
+        const failedPaymentsElement =
+            document.getElementById(
+                "failedPayments"
+            );
+
+
+        const paidRevenueElement =
+            document.getElementById(
+                "paidRevenue"
+            );
+
+
+        if (allPaymentsElement) {
+
+            allPaymentsElement.innerText =
+                allPayments;
+
+        }
+
+
+        if (paidPaymentsElement) {
+
+            paidPaymentsElement.innerText =
+                paidPayments;
+
+        }
+
+
+        if (pendingPaymentsElement) {
+
+            pendingPaymentsElement.innerText =
+                pendingPayments;
+
+        }
+
+
+        if (failedPaymentsElement) {
+
+            failedPaymentsElement.innerText =
+                failedPayments;
+
+        }
+
+
+        if (paidRevenueElement) {
+
+            paidRevenueElement.innerText =
+                "₹" +
+                paidRevenue;
+
+        }
+
+
+        /* ==========================================
+                CONSOLE
+        ========================================== */
+
+        console.log(
+            "Payment Summary Updated:",
+            {
+                allPayments,
+                paidPayments,
+                pendingPayments,
+                failedPayments,
+                paidRevenue
+            }
+        );
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Error Updating Payment Summary:",
+            error
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+        INITIAL PAYMENT SUMMARY LOAD
+========================================== */
+
+updatePaymentSummary();
+
+/* ==========================================
+        MODULE 19 — STEP 18D
+        PAYMENT SUMMARY CARD FILTER
+========================================== */
+
+document.addEventListener(
+    "click",
+    function (event) {
+
+        const paymentCard =
+            event.target.closest(
+                ".payment-summary-card"
+            );
+
+
+        /* ==========================================
+                CHECK PAYMENT CARD
+        ========================================== */
+
+        if (!paymentCard) {
+            return;
+        }
+
+
+        const filter =
+            paymentCard.getAttribute(
+                "data-payment-filter"
+            );
+
+
+        console.log(
+            "Payment Summary Filter:",
+            filter
+        );
+
+
+        /* ==========================================
+                GET ORDER TABLE ROWS
+        ========================================== */
+
+        const rows =
+            document.querySelectorAll(
+                "#ordersTableBody tr"
+            );
+
+
+        rows.forEach(
+            function (row) {
+
+                /* Ignore empty rows */
+
+                if (
+                    !row.cells ||
+                    row.cells.length < 7
+                ) {
+
+                    return;
+
+                }
+
+
+                /* ==================================
+                        GET PAYMENT STATUS
+                ================================== */
+
+                const paymentSelect =
+                    row.querySelector(
+                        ".payment-status-select"
+                    );
+
+
+                if (!paymentSelect) {
+
+                    return;
+
+                }
+
+
+                const paymentStatus =
+                    paymentSelect.value;
+
+
+                /* ==================================
+                        SHOW ALL PAYMENTS
+                ================================== */
+
+                if (
+                    filter === "all"
+                ) {
+
+                    row.style.display =
+                        "";
+
+                    return;
+
+                }
+
+
+                /* ==================================
+                        PAID REVENUE
+                ================================== */
+
+                if (
+                    filter === "revenue"
+                ) {
+
+                    if (
+                        paymentStatus === "Paid"
+                    ) {
+
+                        row.style.display =
+                            "";
+
+                    }
+
+                    else {
+
+                        row.style.display =
+                            "none";
+
+                    }
+
+                    return;
+
+                }
+
+
+                /* ==================================
+                        FILTER PAYMENT STATUS
+                ================================== */
+
+                if (
+                    paymentStatus ===
+                    filter
+                ) {
+
+                    row.style.display =
+                        "";
+
+                }
+
+                else {
+
+                    row.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+
+        /* ==========================================
+                REMOVE ACTIVE CLASS
+        ========================================== */
+
+        document
+            .querySelectorAll(
+                ".payment-summary-card"
+            )
+            .forEach(
+                function (card) {
+
+                    card.classList.remove(
+                        "payment-summary-card-active"
+                    );
+
+                }
+            );
+
+
+        /* ==========================================
+                ADD ACTIVE CLASS
+        ========================================== */
+
+        paymentCard.classList.add(
+            "payment-summary-card-active"
+        );
+
+    }
+);
