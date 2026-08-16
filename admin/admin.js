@@ -537,18 +537,37 @@ document.addEventListener("click", async function (event) {
 async function loadOrders() {
 
     const tableBody =
-        document.getElementById("ordersTableBody");
+        document.getElementById(
+            "ordersTableBody"
+        );
 
-    if (!tableBody) return;
+
+    if (!tableBody) {
+        return;
+    }
+
 
     try {
 
+        /* ==========================================
+                GET ORDERS
+        ========================================== */
+
         const querySnapshot =
             await getDocs(
-                collection(db, "orders")
+                collection(
+                    db,
+                    "orders"
+                )
             );
 
+
         tableBody.innerHTML = "";
+
+
+        /* ==========================================
+                NO ORDERS
+        ========================================== */
 
         if (querySnapshot.empty) {
 
@@ -560,131 +579,265 @@ async function loadOrders() {
                 </tr>
             `;
 
+
             console.log(
                 "Orders Loaded Successfully: 0"
             );
 
+
             return;
         }
 
-        querySnapshot.forEach((orderDoc) => {
 
-            const order = orderDoc.data();
+        /* ==========================================
+                LOAD EACH ORDER
+        ========================================== */
 
-            const row =
-                document.createElement("tr");
+        querySnapshot.forEach(
+            (orderDoc) => {
 
-            row.innerHTML = `
+                const order =
+                    orderDoc.data();
 
-                <td>${orderDoc.id}</td>
 
-                <td>
-                    ${order.customerName || ""}
-                </td>
+                const row =
+                    document.createElement(
+                        "tr"
+                    );
 
-                <td>
-                    ${order.productName || ""}
-                </td>
 
-                <td>
-                    ₹${order.amount || 0}
-                </td>
+                /* ==========================================
+                        ORDER STATUS
+                ========================================== */
 
-               <td>
+                const currentOrderStatus =
+                    order.orderStatus ||
+                    "Pending";
 
-    <select
-        class="payment-status-select"
-        data-id="${orderDoc.id}">
 
-        <option
-            value="Pending"
-            ${
-                (order.paymentStatus || "Pending") === "Pending"
-                ? "selected"
-                : ""
-            }>
-            Pending
-        </option>
+                const isCancelled =
+                    currentOrderStatus ===
+                    "Cancelled";
 
-        <option
-            value="Paid"
-            ${
-                order.paymentStatus === "Paid"
-                ? "selected"
-                : ""
-            }>
-            Paid
-        </option>
 
-        <option
-            value="Failed"
-            ${
-                order.paymentStatus === "Failed"
-                ? "selected"
-                : ""
-            }>
-            Failed
-        </option>
+                /* ==========================================
+                        CREATE ROW
+                ========================================== */
 
-    </select>
+                row.innerHTML = `
 
-</td>
+                    <!-- ORDER ID -->
 
-                <td>
+                    <td>
+                        ${orderDoc.id}
+                    </td>
 
-    <select
-        class="order-status-select"
-        data-id="${orderDoc.id}">
 
-        <option
-            value="Pending"
-            ${
-                (order.orderStatus || "Pending") === "Pending"
-                ? "selected"
-                : ""
-            }>
-            Pending
-        </option>
+                    <!-- CUSTOMER -->
 
-        <option
-            value="Completed"
-            ${
-                order.orderStatus === "Completed"
-                ? "selected"
-                : ""
-            }>
-            Completed
-        </option>
+                    <td>
+                        ${order.customerName || "N/A"}
+                    </td>
 
-        <option
-            value="Cancelled"
-            ${
-                order.orderStatus === "Cancelled"
-                ? "selected"
-                : ""
-            }>
-            Cancelled
-        </option>
 
-    </select>
+                    <!-- PRODUCT -->
 
-</td>
+                    <td>
+                        ${order.productName || "N/A"}
+                    </td>
 
-                <td>
 
-                    <button
-    class="view-order-btn"
-    data-id="${orderDoc.id}">
-    View
-</button>
+                    <!-- AMOUNT -->
 
-                </td>
+                    <td>
+                        ₹${order.amount || 0}
+                    </td>
 
-            `;
 
-            tableBody.appendChild(row);
+                    <!-- ==================================
+                            PAYMENT STATUS
+                    =================================== -->
 
-        });
+                    <td>
+
+                        <select
+                            class="payment-status-select"
+                            data-id="${orderDoc.id}">
+
+                            <option
+                                value="Pending"
+                                ${
+                                    (
+                                        order.paymentStatus ||
+                                        "Pending"
+                                    ) === "Pending"
+                                        ? "selected"
+                                        : ""
+                                }>
+
+                                Pending
+
+                            </option>
+
+
+                            <option
+                                value="Paid"
+                                ${
+                                    order.paymentStatus ===
+                                    "Paid"
+                                        ? "selected"
+                                        : ""
+                                }>
+
+                                Paid
+
+                            </option>
+
+
+                            <option
+                                value="Failed"
+                                ${
+                                    order.paymentStatus ===
+                                    "Failed"
+                                        ? "selected"
+                                        : ""
+                                }>
+
+                                Failed
+
+                            </option>
+
+                        </select>
+
+                    </td>
+
+
+                    <!-- ==================================
+                            ORDER STATUS
+                    =================================== -->
+
+                    <td>
+
+                        <select
+                            class="order-status-select"
+                            data-id="${orderDoc.id}"
+                            data-previous-status="${currentOrderStatus}"
+                            ${isCancelled ? "disabled" : ""}>
+
+                            <option
+                                value="Pending"
+                                ${
+                                    currentOrderStatus ===
+                                    "Pending"
+                                        ? "selected"
+                                        : ""
+                                }>
+
+                                Pending
+
+                            </option>
+
+
+                            <option
+                                value="Completed"
+                                ${
+                                    currentOrderStatus ===
+                                    "Completed"
+                                        ? "selected"
+                                        : ""
+                                }>
+
+                                Completed
+
+                            </option>
+
+
+                            <option
+                                value="Cancelled"
+                                ${
+                                    currentOrderStatus ===
+                                    "Cancelled"
+                                        ? "selected"
+                                        : ""
+                                }>
+
+                                Cancelled
+
+                            </option>
+
+                        </select>
+
+                    </td>
+
+
+                    <!-- ==================================
+                            VIEW BUTTON
+                    =================================== -->
+
+                    <td>
+
+                        <button
+                            class="view-order-btn"
+                            data-id="${orderDoc.id}">
+
+                            View
+
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                /* ==========================================
+                        ADD ROW TO TABLE
+                ========================================== */
+
+                tableBody.appendChild(
+                    row
+                );
+
+
+                /* ==========================================
+                        INITIAL STATUS COLORS
+                ========================================== */
+
+                const paymentSelect =
+                    row.querySelector(
+                        ".payment-status-select"
+                    );
+
+
+                const orderSelect =
+                    row.querySelector(
+                        ".order-status-select"
+                    );
+
+
+                if (paymentSelect) {
+
+                    updateStatusColor(
+                        paymentSelect
+                    );
+
+                }
+
+
+                if (orderSelect) {
+
+                    updateStatusColor(
+                        orderSelect
+                    );
+
+                }
+
+            }
+        );
+
+
+        /* ==========================================
+                SUCCESS MESSAGE
+        ========================================== */
 
         console.log(
             "Orders Loaded Successfully:",
@@ -692,6 +845,7 @@ async function loadOrders() {
         );
 
     }
+
 
     catch (error) {
 
@@ -716,121 +870,228 @@ loadOrders();
         VIEW ORDER DETAILS
 ========================================== */
 
-document.addEventListener("click", async function (event) {
+document.addEventListener(
+    "click",
+    async function (event) {
 
-    if (!event.target.classList.contains("view-order-btn")) {
-        return;
-    }
-
-    const orderId =
-        event.target.getAttribute("data-id");
-
-    console.log(
-        "Loading Order Details:",
-        orderId
-    );
-
-    try {
-
-        const orderRef =
-            doc(db, "orders", orderId);
-
-        const orderSnap =
-            await getDoc(orderRef);
-
-        if (!orderSnap.exists()) {
-
-            alert("❌ Order not found");
-
+        if (
+            !event.target.classList.contains(
+                "view-order-btn"
+            )
+        ) {
             return;
         }
 
-        const order =
-            orderSnap.data();
+
+        const orderId =
+            event.target.getAttribute(
+                "data-id"
+            );
+
 
         console.log(
-            "Order Details Loaded:",
-            order
+            "Loading Order Details:",
+            orderId
         );
 
 
-        /* ==========================================
-                SHOW DATA IN MODAL
-        ========================================== */
+        try {
 
-        const modal =
-            document.getElementById(
-                "orderDetailsModal"
+            /* ==========================================
+                    GET ORDER FROM FIRESTORE
+            ========================================== */
+
+            const orderRef =
+                doc(
+                    db,
+                    "orders",
+                    orderId
+                );
+
+
+            const orderSnap =
+                await getDoc(orderRef);
+
+
+            if (!orderSnap.exists()) {
+
+                alert(
+                    "❌ Order not found"
+                );
+
+                return;
+            }
+
+
+            const order =
+                orderSnap.data();
+
+
+            console.log(
+                "Order Details Loaded:",
+                order
             );
 
-        if (!modal) {
+
+            /* ==========================================
+                    GET MODAL
+            ========================================== */
+
+            const modal =
+                document.getElementById(
+                    "orderDetailsModal"
+                );
+
+
+            if (!modal) {
+
+                console.error(
+                    "Order Details Modal Not Found"
+                );
+
+                return;
+            }
+
+
+            /* ==========================================
+                    SAFE ORDER DATA
+            ========================================== */
+
+            const customerName =
+                order.customerName ||
+                order.customer ||
+                "N/A";
+
+
+            const productName =
+                order.productName ||
+                order.product ||
+                "N/A";
+
+
+            const amount =
+                order.amount !== undefined &&
+                order.amount !== null
+                    ? order.amount
+                    : 0;
+
+
+            const paymentStatus =
+                order.paymentStatus ||
+                "Pending";
+
+
+            const orderStatus =
+                order.orderStatus ||
+                "Pending";
+
+
+            /* ==========================================
+                    SHOW ORDER DATA
+            ========================================== */
+
+            document.getElementById(
+                "detailOrderId"
+            ).innerText =
+                orderId;
+
+
+            document.getElementById(
+                "detailCustomer"
+            ).innerText =
+                customerName;
+
+
+            document.getElementById(
+                "detailProduct"
+            ).innerText =
+                productName;
+
+
+            document.getElementById(
+                "detailAmount"
+            ).innerText =
+                "₹" + amount;
+
+
+            document.getElementById(
+                "detailPayment"
+            ).innerText =
+                paymentStatus;
+
+
+            document.getElementById(
+                "detailStatus"
+            ).innerText =
+                orderStatus;
+
+
+            /* ==========================================
+                    CREATED DATE
+            ========================================== */
+
+            let createdDate =
+                "-";
+
+
+            if (order.createdAt) {
+
+                if (
+                    typeof order.createdAt.toDate ===
+                    "function"
+                ) {
+
+                    createdDate =
+                        order.createdAt
+                            .toDate()
+                            .toLocaleString();
+
+                }
+
+                else {
+
+                    createdDate =
+                        new Date(
+                            order.createdAt
+                        ).toLocaleString();
+
+                }
+
+            }
+
+
+            document.getElementById(
+                "detailCreatedAt"
+            ).innerText =
+                createdDate;
+
+
+            /* ==========================================
+                    OPEN MODAL
+            ========================================== */
+
+            modal.style.display =
+                "flex";
+
+
+            console.log(
+                "Order Details Modal Opened"
+            );
+
+        }
+
+
+        catch (error) {
 
             console.error(
-                "Order Details Modal Not Found"
+                "Error Loading Order Details:",
+                error
             );
 
-            return;
         }
 
-
-        document.getElementById(
-            "detailOrderId"
-        ).innerText = orderId;
-
-
-        document.getElementById(
-            "detailCustomer"
-        ).innerText =
-            order.customerName || "";
-
-
-        document.getElementById(
-            "detailProduct"
-        ).innerText =
-            order.productName || "";
-
-
-        document.getElementById(
-            "detailAmount"
-        ).innerText =
-            "₹" + (order.amount || 0);
-
-
-        document.getElementById(
-            "detailPayment"
-        ).innerText =
-            order.paymentStatus || "";
-
-
-        document.getElementById(
-            "detailStatus"
-        ).innerText =
-            order.orderStatus || "Pending";
-
-
-        /* ==========================================
-                OPEN MODAL
-        ========================================== */
-
-        modal.style.display = "flex";
-
-
-        console.log(
-            "Order Details Modal Opened"
-        );
-
     }
-
-    catch (error) {
-
-        console.error(
-            "Error Loading Order Details:",
-            error
-        );
-
-    }
-
-});
+);
 
 
 /* ==========================================
@@ -940,6 +1201,7 @@ if (searchOrder) {
 
 /* ==========================================
         UPDATE ORDER STATUS
+        WITH CANCEL CONFIRMATION
 ========================================== */
 
 document.addEventListener(
@@ -954,11 +1216,20 @@ document.addEventListener(
             return;
         }
 
+
+        const selectElement =
+            event.target;
+
+
         const orderId =
-            event.target.getAttribute("data-id");
+            selectElement.getAttribute(
+                "data-id"
+            );
+
 
         const newStatus =
-            event.target.value;
+            selectElement.value;
+
 
         console.log(
             "Updating Order Status:",
@@ -966,22 +1237,93 @@ document.addEventListener(
             newStatus
         );
 
+
+        /* ==========================================
+                CANCEL CONFIRMATION
+        ========================================== */
+
+        if (
+            newStatus === "Cancelled"
+        ) {
+
+            const confirmed =
+                confirm(
+                    "⚠️ Are you sure you want to cancel this order?"
+                );
+
+
+            if (!confirmed) {
+
+                console.log(
+                    "Order Cancellation Cancelled:",
+                    orderId
+                );
+
+
+                /* Restore Previous Status */
+
+                const previousStatus =
+                    selectElement.getAttribute(
+                        "data-previous-status"
+                    );
+
+
+                if (previousStatus) {
+
+                    selectElement.value =
+                        previousStatus;
+
+                    updateStatusColor(
+                        selectElement
+                    );
+
+                }
+
+
+                return;
+
+            }
+
+        }
+
+
         try {
 
             const orderRef =
-                doc(db, "orders", orderId);
+                doc(
+                    db,
+                    "orders",
+                    orderId
+                );
+
 
             await updateDoc(
                 orderRef,
                 {
-                    orderStatus: newStatus
+                    orderStatus:
+                        newStatus
                 }
             );
+
 
             console.log(
                 "Order Status Updated Successfully:",
                 newStatus
             );
+
+
+            /* Save Current Status */
+
+            selectElement.setAttribute(
+                "data-previous-status",
+                newStatus
+            );
+
+
+            updateStatusColor(
+                selectElement
+            );
+
 
             alert(
                 "✅ Order Status Updated Successfully!"
@@ -989,12 +1331,14 @@ document.addEventListener(
 
         }
 
+
         catch (error) {
 
             console.error(
                 "Error Updating Order Status:",
                 error
             );
+
 
             alert(
                 "❌ Failed to Update Order Status"
@@ -1066,6 +1410,109 @@ document.addEventListener(
 
             alert(
                 "❌ Failed to Update Payment Status"
+            );
+
+        }
+
+    }
+);
+
+/* ==========================================
+        PROFESSIONAL STATUS COLORS
+========================================== */
+
+function updateStatusColor(selectElement) {
+
+    selectElement.classList.remove(
+        "status-pending",
+        "status-paid",
+        "status-failed",
+        "status-completed",
+        "status-cancelled"
+    );
+
+
+    const value =
+        selectElement.value;
+
+
+    if (value === "Pending") {
+
+        selectElement.classList.add(
+            "status-pending"
+        );
+
+    }
+
+    else if (value === "Paid") {
+
+        selectElement.classList.add(
+            "status-paid"
+        );
+
+    }
+
+    else if (value === "Failed") {
+
+        selectElement.classList.add(
+            "status-failed"
+        );
+
+    }
+
+    else if (value === "Completed") {
+
+        selectElement.classList.add(
+            "status-completed"
+        );
+
+    }
+
+    else if (value === "Cancelled") {
+
+        selectElement.classList.add(
+            "status-cancelled"
+        );
+
+    }
+
+}
+
+
+/* ==========================================
+        INITIAL STATUS COLORS
+========================================== */
+
+document
+    .querySelectorAll(
+        ".order-status-select, .payment-status-select"
+    )
+    .forEach(function (select) {
+
+        updateStatusColor(select);
+
+    });
+
+
+/* ==========================================
+        CHANGE STATUS COLOR
+========================================== */
+
+document.addEventListener(
+    "change",
+    function (event) {
+
+        if (
+            event.target.classList.contains(
+                "order-status-select"
+            ) ||
+            event.target.classList.contains(
+                "payment-status-select"
+            )
+        ) {
+
+            updateStatusColor(
+                event.target
             );
 
         }

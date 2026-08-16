@@ -340,3 +340,452 @@ font-size:28px;
 cursor:pointer;
 
 }
+
+/* ==========================================
+        PROFESSIONAL ORDER STATUS UI
+========================================== */
+
+
+/* ==========================
+   Status Dropdown
+========================== */
+
+.order-status-select,
+.payment-status-select {
+
+    padding: 7px 12px;
+
+    border-radius: 20px;
+
+    border: 1px solid #ccc;
+
+    font-size: 14px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    outline: none;
+
+    background: #fff;
+
+    transition: 0.3s;
+
+}
+
+
+/* ==========================
+   Order Status
+========================== */
+
+.order-status-select {
+
+    color: #333;
+
+}
+
+
+/* Pending */
+
+.order-status-select[value="Pending"] {
+
+    background: #fff3cd;
+
+    color: #856404;
+
+}
+
+
+/* Completed */
+
+.order-status-select[value="Completed"] {
+
+    background: #d4edda;
+
+    color: #155724;
+
+}
+
+
+/* Cancelled */
+
+.order-status-select[value="Cancelled"] {
+
+    background: #f8d7da;
+
+    color: #721c24;
+
+}
+
+
+/* ==========================
+   Payment Status
+========================== */
+
+.payment-status-select {
+
+    color: #333;
+
+}
+
+
+/* Pending */
+
+.payment-status-select[value="Pending"] {
+
+    background: #fff3cd;
+
+    color: #856404;
+
+}
+
+
+/* Paid */
+
+.payment-status-select[value="Paid"] {
+
+    background: #d4edda;
+
+    color: #155724;
+
+}
+
+
+/* Failed */
+
+.payment-status-select[value="Failed"] {
+
+    background: #f8d7da;
+
+    color: #721c24;
+
+}
+
+
+/* ==========================
+   Hover Effect
+========================== */
+
+.order-status-select:hover,
+.payment-status-select:hover {
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 3px 8px rgba(0,0,0,.12);
+
+}
+
+
+/* ==========================
+   Focus Effect
+========================== */
+
+.order-status-select:focus,
+.payment-status-select:focus {
+
+    border-color: #0d47a1;
+
+    box-shadow:
+        0 0 0 3px rgba(13,71,161,.12);
+
+}
+
+/* ==========================================
+        STATUS COLOR CLASSES
+========================================== */
+
+
+/* Pending */
+
+.status-pending {
+
+    background: #fff3cd !important;
+
+    color: #856404 !important;
+
+    border-color: #ffc107 !important;
+
+}
+
+
+/* Paid */
+
+.status-paid {
+
+    background: #d4edda !important;
+
+    color: #155724 !important;
+
+    border-color: #28a745 !important;
+
+}
+
+
+/* Failed */
+
+.status-failed {
+
+    background: #f8d7da !important;
+
+    color: #721c24 !important;
+
+    border-color: #dc3545 !important;
+
+}
+
+
+/* Completed */
+
+.status-completed {
+
+    background: #d4edda !important;
+
+    color: #155724 !important;
+
+    border-color: #28a745 !important;
+
+}
+
+
+/* Cancelled */
+
+.status-cancelled {
+
+    background: #f8d7da !important;
+
+    color: #721c24 !important;
+
+    border-color: #dc3545 !important;
+
+}
+
+/* ==========================================
+        PROFESSIONAL ORDER DETAILS MODAL
+========================================== */
+
+.order-details-modal {
+
+    width: 600px;
+
+    max-width: 95%;
+
+    padding: 30px;
+
+}
+
+
+/* ==========================================
+        MODAL HEADER
+========================================== */
+
+.order-modal-header {
+
+    margin-bottom: 25px;
+
+    border-bottom: 1px solid #eee;
+
+    padding-bottom: 18px;
+
+}
+
+
+.order-modal-header h2 {
+
+    margin: 0;
+
+    color: #0d47a1;
+
+    font-size: 26px;
+
+}
+
+
+.order-modal-header p {
+
+    margin-top: 6px;
+
+    color: #777;
+
+    font-size: 14px;
+
+}
+
+
+/* ==========================================
+        CLOSE BUTTON
+========================================== */
+
+.close-order-modal {
+
+    position: absolute;
+
+    right: 18px;
+
+    top: 14px;
+
+    width: 36px !important;
+
+    height: 36px;
+
+    padding: 0 !important;
+
+    background: transparent !important;
+
+    color: #666 !important;
+
+    border: none !important;
+
+    font-size: 28px;
+
+    line-height: 36px;
+
+    cursor: pointer;
+
+}
+
+
+.close-order-modal:hover {
+
+    color: #dc3545 !important;
+
+    transform: scale(1.1);
+
+}
+
+
+/* ==========================================
+        DETAILS GRID
+========================================== */
+
+.order-details-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 15px;
+
+}
+
+
+/* ==========================================
+        DETAIL CARD
+========================================== */
+
+.order-detail-card {
+
+    background: #f7f9fc;
+
+    border: 1px solid #e5e9f0;
+
+    border-radius: 10px;
+
+    padding: 16px;
+
+}
+
+
+.order-detail-card span {
+
+    display: block;
+
+    font-size: 12px;
+
+    color: #777;
+
+    margin-bottom: 7px;
+
+}
+
+
+.order-detail-card strong {
+
+    display: block;
+
+    color: #333;
+
+    font-size: 15px;
+
+    word-break: break-word;
+
+}
+
+
+.order-detail-price {
+
+    color: #0d47a1 !important;
+
+    font-size: 20px !important;
+
+}
+
+
+/* ==========================================
+        MODAL FOOTER
+========================================== */
+
+.order-modal-footer {
+
+    margin-top: 25px;
+
+    padding-top: 18px;
+
+    border-top: 1px solid #eee;
+
+    text-align: right;
+
+}
+
+
+.order-modal-footer .secondary {
+
+    position: static;
+
+    width: auto !important;
+
+    height: auto;
+
+    padding: 10px 20px !important;
+
+    background: #0d47a1 !important;
+
+    color: #fff !important;
+
+    border-radius: 7px;
+
+    font-size: 14px;
+
+}
+
+
+.order-modal-footer .secondary:hover {
+
+    background: #1565c0 !important;
+
+}
+
+
+/* ==========================================
+        MOBILE
+========================================== */
+
+@media (max-width: 600px) {
+
+    .order-details-modal {
+
+        width: 95%;
+
+        padding: 22px;
+
+    }
+
+
+    .order-details-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+}

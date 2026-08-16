@@ -163,57 +163,166 @@ No orders found.
 
 </section>
 
+</main>
+
 <!-- ==========================================
      ORDER DETAILS MODAL
 ========================================== -->
 
-<div id="orderDetailsModal" class="modal">
+<div
+    id="orderDetailsModal"
+    class="modal">
 
-    <div class="modal-content">
+    <div class="modal-content order-details-modal">
 
-        <span class="close-order-modal">&times;</span>
+        <!-- Close Button -->
 
-        <h2>Order Details</h2>
+        <button
+            type="button"
+            class="close-order-modal">
+            &times;
+        </button>
 
-        <div class="order-details">
 
-            <p>
-                <strong>Order ID:</strong>
-                <span id="detailOrderId"></span>
-            </p>
+        <!-- Modal Header -->
 
-            <p>
-                <strong>Customer:</strong>
-                <span id="detailCustomer"></span>
-            </p>
+        <div class="order-modal-header">
 
-            <p>
-                <strong>Product:</strong>
-                <span id="detailProduct"></span>
-            </p>
+            <h2>Order Details</h2>
 
             <p>
-                <strong>Amount:</strong>
-                <span id="detailAmount"></span>
-            </p>
-
-            <p>
-                <strong>Payment Status:</strong>
-                <span id="detailPayment"></span>
-            </p>
-
-            <p>
-                <strong>Order Status:</strong>
-                <span id="detailStatus"></span>
+                Complete information about this order
             </p>
 
         </div>
 
-    </div>
+
+        <!-- Order Information -->
+
+        <div class="order-details-grid">
+
+
+            <!-- Order ID -->
+
+            <div class="order-detail-card">
+
+                <span>
+                    Order ID
+                </span>
+
+                <strong id="detailOrderId">
+                    -
+                </strong>
+
+            </div>
+
+
+            <!-- Customer -->
+
+            <div class="order-detail-card">
+
+                <span>
+                    Customer
+                </span>
+
+                <strong id="detailCustomer">
+                    -
+                </strong>
+
+            </div>
+
+
+            <!-- Product -->
+
+            <div class="order-detail-card">
+
+                <span>
+                    Product
+                </span>
+
+                <strong id="detailProduct">
+                    -
+                </strong>
+
+            </div>
+
+
+            <!-- Amount -->
+
+            <div class="order-detail-card">
+
+                <span>
+                    Amount
+                </span>
+
+                <strong
+                    id="detailAmount"
+                    class="order-detail-price">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <!-- Payment Status -->
+
+            <div class="order-detail-card">
+
+                <span>
+                    Payment Status
+                </span>
+
+                <strong id="detailPayment">
+                    -
+                </strong>
+
+            </div>
+
+
+            <!-- Order Status -->
+
+            <div class="order-detail-card">
+
+                <span>
+                    Order Status
+                </span>
+
+                <strong id="detailStatus">
+                    -
+                </strong>
+
+            </div>
+
+        </div>
+
+        <!-- Created Date -->
+
+<div class="order-detail-card">
+
+    <span>
+        Created Date
+    </span>
+
+    <strong id="detailCreatedAt">
+        -
+    </strong>
 
 </div>
 
-</main>
+
+        <!-- Footer -->
+
+        <div class="order-modal-footer">
+
+            <button
+                type="button"
+                class="close-order-modal secondary">
+                Close
+            </button>
+
+        </div>
+
+    </div>
 
 </div>
 
