@@ -1115,8 +1115,12 @@ if (closeOrderModal) {
         "click",
         function () {
 
-            orderDetailsModal.style.display =
-                "none";
+            if (orderDetailsModal) {
+
+                orderDetailsModal.style.display =
+                    "none";
+
+            }
 
         }
     );
@@ -1142,64 +1146,7 @@ window.addEventListener(
 );
 
 /* ==========================================
-        ORDER SEARCH
-========================================== */
-
-const searchOrder =
-    document.getElementById("searchOrder");
-
-if (searchOrder) {
-
-    searchOrder.addEventListener(
-        "input",
-        function () {
-
-            const searchText =
-                this.value.toLowerCase().trim();
-
-            const rows =
-                document.querySelectorAll(
-                    "#ordersTableBody tr"
-                );
-
-            rows.forEach(function (row) {
-
-                const orderId =
-                    row.cells[0]?.textContent
-                        .toLowerCase() || "";
-
-                const customer =
-                    row.cells[1]?.textContent
-                        .toLowerCase() || "";
-
-                const product =
-                    row.cells[2]?.textContent
-                        .toLowerCase() || "";
-
-                if (
-                    orderId.includes(searchText) ||
-                    customer.includes(searchText) ||
-                    product.includes(searchText)
-                ) {
-
-                    row.style.display = "";
-
-                } else {
-
-                    row.style.display = "none";
-
-                }
-
-            });
-
-        }
-    );
-
-}
-
-
-/* ==========================================
-        UPDATE ORDER STATUS
+        ORDER STATUS UPDATE
         WITH CANCEL CONFIRMATION
 ========================================== */
 
@@ -1258,10 +1205,7 @@ document.addEventListener(
                     orderId
                 );
 
-
-                /* Restore Previous Status */
-
-                const previousStatus =
+ const previousStatus =
                     selectElement.getAttribute(
                         "data-previous-status"
                     );
@@ -1272,6 +1216,7 @@ document.addEventListener(
                     selectElement.value =
                         previousStatus;
 
+
                     updateStatusColor(
                         selectElement
                     );
@@ -1280,8 +1225,7 @@ document.addEventListener(
 
 
                 return;
-
-            }
+ }
 
         }
 
@@ -1309,12 +1253,10 @@ document.addEventListener(
                 "Order Status Updated Successfully:",
                 newStatus
             );
+
             updateOrderSummary();
 
-
-            /* Save Current Status */
-
-            selectElement.setAttribute(
+ selectElement.setAttribute(
                 "data-previous-status",
                 newStatus
             );
@@ -1323,6 +1265,13 @@ document.addEventListener(
             updateStatusColor(
                 selectElement
             );
+
+
+            /* ==========================================
+                    RE-APPLY CURRENT FILTER
+            ========================================== */
+
+            applyAllOrderFilters();
 
 
             alert(
@@ -1349,6 +1298,7 @@ document.addEventListener(
     }
 );
 
+
 /* ==========================================
         UPDATE PAYMENT STATUS
 ========================================== */
@@ -1365,11 +1315,16 @@ document.addEventListener(
             return;
         }
 
+
         const orderId =
-            event.target.getAttribute("data-id");
+            event.target.getAttribute(
+                "data-id"
+            );
+
 
         const newPaymentStatus =
             event.target.value;
+
 
         console.log(
             "Updating Payment Status:",
@@ -1377,10 +1332,16 @@ document.addEventListener(
             newPaymentStatus
         );
 
+
         try {
 
             const orderRef =
-                doc(db, "orders", orderId);
+                doc(
+                    db,
+                    "orders",
+                    orderId
+                );
+
 
             await updateDoc(
                 orderRef,
@@ -1390,12 +1351,22 @@ document.addEventListener(
                 }
             );
 
+
             console.log(
                 "Payment Status Updated Successfully:",
                 newPaymentStatus
             );
 
+
             updatePaymentSummary();
+
+
+            /* ==========================================
+                    RE-APPLY CURRENT FILTER
+            ========================================== */
+
+            applyAllOrderFilters();
+
 
             alert(
                 "✅ Payment Status Updated Successfully!"
@@ -1403,12 +1374,14 @@ document.addEventListener(
 
         }
 
+
         catch (error) {
 
             console.error(
                 "Error Updating Payment Status:",
                 error
             );
+
 
             alert(
                 "❌ Failed to Update Payment Status"
@@ -1419,11 +1392,14 @@ document.addEventListener(
     }
 );
 
+
 /* ==========================================
         PROFESSIONAL STATUS COLORS
 ========================================== */
 
-function updateStatusColor(selectElement) {
+function updateStatusColor(
+    selectElement
+) {
 
     selectElement.classList.remove(
         "status-pending",
@@ -1438,7 +1414,9 @@ function updateStatusColor(selectElement) {
         selectElement.value;
 
 
-    if (value === "Pending") {
+    if (
+        value === "Pending"
+    ) {
 
         selectElement.classList.add(
             "status-pending"
@@ -1446,7 +1424,9 @@ function updateStatusColor(selectElement) {
 
     }
 
-    else if (value === "Paid") {
+    else if (
+        value === "Paid"
+    ) {
 
         selectElement.classList.add(
             "status-paid"
@@ -1454,7 +1434,9 @@ function updateStatusColor(selectElement) {
 
     }
 
-    else if (value === "Failed") {
+    else if (
+        value === "Failed"
+    ) {
 
         selectElement.classList.add(
             "status-failed"
@@ -1462,7 +1444,9 @@ function updateStatusColor(selectElement) {
 
     }
 
-    else if (value === "Completed") {
+    else if (
+        value === "Completed"
+    ) {
 
         selectElement.classList.add(
             "status-completed"
@@ -1470,7 +1454,9 @@ function updateStatusColor(selectElement) {
 
     }
 
-    else if (value === "Cancelled") {
+    else if (
+        value === "Cancelled"
+    ) {
 
         selectElement.classList.add(
             "status-cancelled"
@@ -1489,11 +1475,15 @@ document
     .querySelectorAll(
         ".order-status-select, .payment-status-select"
     )
-    .forEach(function (select) {
+    .forEach(
+        function (select) {
 
-        updateStatusColor(select);
+            updateStatusColor(
+                select
+            );
 
-    });
+        }
+    );
 
 
 /* ==========================================
@@ -1522,18 +1512,14 @@ document.addEventListener(
     }
 );
 
+
 /* ==========================================
         MODULE 19 — STEP 16B
         ORDER SUMMARY STATISTICS
 ========================================== */
 
 async function updateOrderSummary() {
-
-    try {
-
-        /* ==========================================
-                GET ORDERS FROM FIRESTORE
-        ========================================== */
+ try {
 
         const querySnapshot =
             await getDocs(
@@ -1543,12 +1529,7 @@ async function updateOrderSummary() {
                 )
             );
 
-
-        /* ==========================================
-                INITIAL VALUES
-        ========================================== */
-
-        let totalOrders = 0;
+let totalOrders = 0;
 
         let pendingOrders = 0;
 
@@ -1558,12 +1539,7 @@ async function updateOrderSummary() {
 
         let totalOrderValue = 0;
 
-
-        /* ==========================================
-                CALCULATE STATISTICS
-        ========================================== */
-
-        querySnapshot.forEach(
+       querySnapshot.forEach(
             (orderDoc) => {
 
                 const order =
@@ -1572,12 +1548,7 @@ async function updateOrderSummary() {
 
                 totalOrders++;
 
-
-                /* ==================================
-                        ORDER STATUS
-                ================================== */
-
-                const status =
+ const status =
                     order.orderStatus ||
                     "Pending";
 
@@ -1606,25 +1577,13 @@ async function updateOrderSummary() {
 
                     cancelledOrders++;
 
-                }
-
-
-                /* ==================================
-                        ORDER AMOUNT
-                ================================== */
-
-                const amount =
+}
+const amount =
                     Number(
                         order.amount || 0
                     );
 
-
-                /*
-                    Cancelled orders are not
-                    included in total value.
-                */
-
-                if (
+      if (
                     status !== "Cancelled"
                 ) {
 
@@ -1711,12 +1670,7 @@ async function updateOrderSummary() {
 
         }
 
-
-        /* ==========================================
-                CONSOLE
-        ========================================== */
-
-        console.log(
+ console.log(
             "Order Summary Updated:",
             {
                 totalOrders,
@@ -1748,9 +1702,10 @@ async function updateOrderSummary() {
 
 updateOrderSummary();
 
+
 /* ==========================================
-        MODULE 19 — STEP 17B
-        SUMMARY CARD ORDER FILTER
+        MODULE 19 — STEP 17B + STEP 19F
+        ORDER SUMMARY FILTER
 ========================================== */
 
 document.addEventListener(
@@ -1762,12 +1717,7 @@ document.addEventListener(
                 ".summary-card"
             );
 
-
-        /* ==========================================
-                CHECK SUMMARY CARD
-        ========================================== */
-
-        if (!summaryCard) {
+if (!summaryCard) {
             return;
         }
 
@@ -1785,94 +1735,24 @@ document.addEventListener(
 
 
         /* ==========================================
-                GET ORDER TABLE ROWS
+                SAVE ORDER FILTER
         ========================================== */
 
-        const rows =
-            document.querySelectorAll(
-                "#ordersTableBody tr"
-            );
-
-
-        rows.forEach(
-            function (row) {
-
-                /* Ignore empty/no-order row */
-
-                if (
-                    !row.cells ||
-                    row.cells.length < 6
-                ) {
-
-                    return;
-
-                }
-
-
-                /* ==================================
-                        GET ORDER STATUS
-                ================================== */
-
-                const statusSelect =
-                    row.querySelector(
-                        ".order-status-select"
-                    );
-
-
-                if (!statusSelect) {
-
-                    return;
-
-                }
-
-
-                const orderStatus =
-                    statusSelect.value;
-
-
-                /* ==================================
-                        SHOW ALL ORDERS
-                ================================== */
-
-                if (
-                    filter === "all"
-                ) {
-
-                    row.style.display =
-                        "";
-
-                    return;
-
-                }
-
-
-                /* ==================================
-                        FILTER BY STATUS
-                ================================== */
-
-                if (
-                    orderStatus ===
-                    filter
-                ) {
-
-                    row.style.display =
-                        "";
-
-                }
-
-                else {
-
-                    row.style.display =
-                        "none";
-
-                }
-
-            }
+        localStorage.setItem(
+            "selectedOrderFilter",
+            filter
         );
 
 
         /* ==========================================
-                REMOVE ACTIVE CLASS
+                APPLY ALL FILTERS
+        ========================================== */
+
+        applyAllOrderFilters();
+
+
+        /* ==========================================
+                ACTIVE CARD
         ========================================== */
 
         document
@@ -1889,17 +1769,13 @@ document.addEventListener(
                 }
             );
 
-
-        /* ==========================================
-                ADD ACTIVE CLASS
-        ========================================== */
-
-        summaryCard.classList.add(
+summaryCard.classList.add(
             "summary-card-active"
         );
 
     }
 );
+
 
 /* ==========================================
         MODULE 19 — STEP 18B
@@ -1907,12 +1783,7 @@ document.addEventListener(
 ========================================== */
 
 async function updatePaymentSummary() {
-
-    try {
-
-        /* ==========================================
-                GET ORDERS FROM FIRESTORE
-        ========================================== */
+ try {
 
         const querySnapshot =
             await getDocs(
@@ -1922,12 +1793,7 @@ async function updatePaymentSummary() {
                 )
             );
 
-
-        /* ==========================================
-                INITIAL VALUES
-        ========================================== */
-
-        let allPayments = 0;
+ let allPayments = 0;
 
         let paidPayments = 0;
 
@@ -1937,12 +1803,7 @@ async function updatePaymentSummary() {
 
         let paidRevenue = 0;
 
-
-        /* ==========================================
-                CALCULATE PAYMENT STATISTICS
-        ========================================== */
-
-        querySnapshot.forEach(
+ querySnapshot.forEach(
             (orderDoc) => {
 
                 const order =
@@ -1956,12 +1817,7 @@ async function updatePaymentSummary() {
                     order.paymentStatus ||
                     "Pending";
 
-
-                /* ==================================
-                        PAID
-                ================================== */
-
-                if (
+ if (
                     paymentStatus === "Paid"
                 ) {
 
@@ -1979,12 +1835,7 @@ async function updatePaymentSummary() {
 
                 }
 
-
-                /* ==================================
-                        PENDING
-                ================================== */
-
-                else if (
+     else if (
                     paymentStatus === "Pending"
                 ) {
 
@@ -1992,12 +1843,7 @@ async function updatePaymentSummary() {
 
                 }
 
-
-                /* ==================================
-                        FAILED
-                ================================== */
-
-                else if (
+     else if (
                     paymentStatus === "Failed"
                 ) {
 
@@ -2082,13 +1928,7 @@ async function updatePaymentSummary() {
                 paidRevenue;
 
         }
-
-
-        /* ==========================================
-                CONSOLE
-        ========================================== */
-
-        console.log(
+ console.log(
             "Payment Summary Updated:",
             {
                 allPayments,
@@ -2120,9 +1960,10 @@ async function updatePaymentSummary() {
 
 updatePaymentSummary();
 
+
 /* ==========================================
-        MODULE 19 — STEP 18D
-        PAYMENT SUMMARY CARD FILTER
+        MODULE 19 — STEP 18D + STEP 19F
+        PAYMENT SUMMARY FILTER
 ========================================== */
 
 document.addEventListener(
@@ -2134,12 +1975,7 @@ document.addEventListener(
                 ".payment-summary-card"
             );
 
-
-        /* ==========================================
-                CHECK PAYMENT CARD
-        ========================================== */
-
-        if (!paymentCard) {
+if (!paymentCard) {
             return;
         }
 
@@ -2157,123 +1993,24 @@ document.addEventListener(
 
 
         /* ==========================================
-                GET ORDER TABLE ROWS
+                SAVE PAYMENT FILTER
         ========================================== */
 
-        const rows =
-            document.querySelectorAll(
-                "#ordersTableBody tr"
-            );
-
-
-        rows.forEach(
-            function (row) {
-
-                /* Ignore empty rows */
-
-                if (
-                    !row.cells ||
-                    row.cells.length < 7
-                ) {
-
-                    return;
-
-                }
-
-
-                /* ==================================
-                        GET PAYMENT STATUS
-                ================================== */
-
-                const paymentSelect =
-                    row.querySelector(
-                        ".payment-status-select"
-                    );
-
-
-                if (!paymentSelect) {
-
-                    return;
-
-                }
-
-
-                const paymentStatus =
-                    paymentSelect.value;
-
-
-                /* ==================================
-                        SHOW ALL PAYMENTS
-                ================================== */
-
-                if (
-                    filter === "all"
-                ) {
-
-                    row.style.display =
-                        "";
-
-                    return;
-
-                }
-
-
-                /* ==================================
-                        PAID REVENUE
-                ================================== */
-
-                if (
-                    filter === "revenue"
-                ) {
-
-                    if (
-                        paymentStatus === "Paid"
-                    ) {
-
-                        row.style.display =
-                            "";
-
-                    }
-
-                    else {
-
-                        row.style.display =
-                            "none";
-
-                    }
-
-                    return;
-
-                }
-
-
-                /* ==================================
-                        FILTER PAYMENT STATUS
-                ================================== */
-
-                if (
-                    paymentStatus ===
-                    filter
-                ) {
-
-                    row.style.display =
-                        "";
-
-                }
-
-                else {
-
-                    row.style.display =
-                        "none";
-
-                }
-
-            }
+        localStorage.setItem(
+            "selectedPaymentFilter",
+            filter
         );
 
 
         /* ==========================================
-                REMOVE ACTIVE CLASS
+                APPLY ALL FILTERS
+        ========================================== */
+
+        applyAllOrderFilters();
+
+
+        /* ==========================================
+                ACTIVE CARD
         ========================================== */
 
         document
@@ -2291,13 +2028,424 @@ document.addEventListener(
             );
 
 
-        /* ==========================================
-                ADD ACTIVE CLASS
-        ========================================== */
-
         paymentCard.classList.add(
             "payment-summary-card-active"
         );
 
     }
+);
+
+
+/* ==========================================
+        MODULE 19 — STEP 19F
+        APPLY ALL ORDER + PAYMENT + SEARCH
+========================================== */
+
+function applyAllOrderFilters() {
+
+    const savedOrderFilter =
+        localStorage.getItem(
+            "selectedOrderFilter"
+        ) || "all";
+
+
+    const savedPaymentFilter =
+        localStorage.getItem(
+            "selectedPaymentFilter"
+        ) || "all";
+
+
+    const searchOrder =
+        document.getElementById(
+            "searchOrder"
+        );
+
+
+    const searchText =
+        searchOrder
+            ? searchOrder.value
+                .toLowerCase()
+                .trim()
+            : "";
+
+
+    const rows =
+        document.querySelectorAll(
+            "#ordersTableBody tr"
+        );
+
+
+    rows.forEach(
+        function (row) {
+
+            /* ==================================
+                    IGNORE EMPTY ROW
+            ================================== */
+
+            if (
+                !row.cells ||
+                row.cells.length < 6
+            ) {
+
+                return;
+
+            }
+
+
+            /* ==================================
+                    SEARCH MATCH
+            ================================== */
+
+            const orderId =
+                row.cells[0]?.textContent
+                    .toLowerCase() || "";
+
+
+            const customer =
+                row.cells[1]?.textContent
+                    .toLowerCase() || "";
+
+
+            const product =
+                row.cells[2]?.textContent
+                    .toLowerCase() || "";
+
+
+            const searchMatch =
+                !searchText ||
+                orderId.includes(searchText) ||
+                customer.includes(searchText) ||
+                product.includes(searchText);
+
+
+            /* ==================================
+                    ORDER STATUS MATCH
+            ================================== */
+
+            const statusSelect =
+                row.querySelector(
+                    ".order-status-select"
+                );
+
+
+            const orderStatus =
+                statusSelect
+                    ? statusSelect.value
+                    : "";
+
+
+            const orderMatch =
+                savedOrderFilter === "all" ||
+                orderStatus === savedOrderFilter;
+
+
+            /* ==================================
+                    PAYMENT STATUS MATCH
+            ================================== */
+
+            const paymentSelect =
+                row.querySelector(
+                    ".payment-status-select"
+                );
+
+
+            const paymentStatus =
+                paymentSelect
+                    ? paymentSelect.value
+                    : "";
+
+
+            let paymentMatch =
+                true;
+
+
+            if (
+                savedPaymentFilter === "all"
+            ) {
+
+                paymentMatch =
+                    true;
+
+            }
+
+
+            else if (
+                savedPaymentFilter === "revenue"
+            ) {
+
+                paymentMatch =
+                    paymentStatus === "Paid";
+
+            }
+
+
+            else {
+
+                paymentMatch =
+                    paymentStatus ===
+                    savedPaymentFilter;
+
+            }
+
+
+            /* ==================================
+                    FINAL VISIBILITY
+            ================================== */
+
+            if (
+                searchMatch &&
+                orderMatch &&
+                paymentMatch
+            ) {
+
+                row.style.display = "";
+
+            }
+
+            else {
+
+                row.style.display = "none";
+
+            }
+
+        }
+    );
+
+
+    /* ==========================================
+            RESTORE ORDER ACTIVE CARD
+    ========================================== */
+
+    document
+        .querySelectorAll(
+            ".summary-card"
+        )
+        .forEach(
+            function (card) {
+
+                card.classList.remove(
+                    "summary-card-active"
+                );
+
+
+                if (
+                    card.getAttribute(
+                        "data-filter"
+                    ) === savedOrderFilter
+                ) {
+
+                    card.classList.add(
+                        "summary-card-active"
+                    );
+
+                }
+
+            }
+        );
+
+
+    /* ==========================================
+            RESTORE PAYMENT ACTIVE CARD
+    ========================================== */
+
+    document
+        .querySelectorAll(
+            ".payment-summary-card"
+        )
+        .forEach(
+            function (card) {
+
+                card.classList.remove(
+                    "payment-summary-card-active"
+                );
+
+
+                if (
+                    card.getAttribute(
+                        "data-payment-filter"
+                    ) === savedPaymentFilter
+                ) {
+
+                    card.classList.add(
+                        "payment-summary-card-active"
+                    );
+
+                }
+
+            }
+        );
+
+
+    console.log(
+        "All Filters Applied:",
+        {
+            orderFilter:
+                savedOrderFilter,
+
+            paymentFilter:
+                savedPaymentFilter,
+
+            search:
+                searchText
+        }
+    );
+
+}
+
+
+/* ==========================================
+        MODULE 19 — STEP 19D + STEP 19F
+        REFRESH ORDERS BUTTON
+========================================== */
+
+const refreshOrdersBtn =
+    document.getElementById(
+        "refreshOrdersBtn"
+    );
+
+
+if (refreshOrdersBtn) {
+
+    refreshOrdersBtn.addEventListener(
+        "click",
+        async function () {
+
+            console.log(
+                "Refreshing Orders..."
+            );
+
+
+            refreshOrdersBtn.disabled =
+                true;
+
+
+            refreshOrdersBtn.innerText =
+                "🔄 Refreshing...";
+
+
+            try {
+
+                /* ==================================
+                        RELOAD ORDERS
+                ================================== */
+
+                await loadOrders();
+
+
+                /* ==================================
+                        UPDATE ORDER SUMMARY
+                ================================== */
+
+                if (
+                    typeof updateOrderSummary ===
+                    "function"
+                ) {
+
+                    await updateOrderSummary();
+
+                }
+
+
+                /* ==================================
+                        UPDATE PAYMENT SUMMARY
+                ================================== */
+
+                if (
+                    typeof updatePaymentSummary ===
+                    "function"
+                ) {
+
+                    await updatePaymentSummary();
+
+                }
+
+
+                /* ==================================
+                        RESTORE ALL FILTERS
+                ================================== */
+
+                applyAllOrderFilters();
+
+
+                console.log(
+                    "Orders Refreshed Successfully"
+                );
+
+            }
+
+
+            catch (error) {
+
+                console.error(
+                    "Error Refreshing Orders:",
+                    error
+                );
+
+
+                alert(
+                    "❌ Failed to Refresh Orders"
+                );
+
+            }
+
+
+            finally {
+
+                refreshOrdersBtn.disabled =
+                    false;
+
+
+                refreshOrdersBtn.innerText =
+                    "🔄 Refresh Orders";
+
+            }
+
+        }
+    );
+
+}
+
+
+/* ==========================================
+        MODULE 19 — STEP 19E + STEP 19F
+        ORDER SEARCH
+========================================== */
+
+const searchOrder =
+    document.getElementById(
+        "searchOrder"
+    );
+
+
+if (searchOrder) {
+
+    searchOrder.addEventListener(
+        "input",
+        function () {
+
+            applyAllOrderFilters();
+
+        }
+    );
+
+}
+
+
+/* ==========================================
+        MODULE 19 — STEP 19F
+        RESTORE FILTERS AFTER PAGE LOAD
+========================================== */
+
+setTimeout(
+    function () {
+
+        applyAllOrderFilters();
+
+
+        console.log(
+            "Saved Order and Payment Filters Restored"
+        );
+
+    },
+    1000
 );

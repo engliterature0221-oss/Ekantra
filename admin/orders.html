@@ -1,5 +1,6 @@
 
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
@@ -21,6 +22,7 @@
 <body>
 
 <div class="admin-layout">
+
 
 <!-- ==========================================
      SIDEBAR
@@ -85,6 +87,7 @@
 
 <main class="main-content">
 
+
 <header class="topbar">
 
 <h1>Orders Management</h1>
@@ -102,7 +105,7 @@ Administrator
 
 
 <!-- ==========================================
-     SEARCH
+     SEARCH + REFRESH
 ========================================== -->
 
 <div class="content-top">
@@ -112,7 +115,18 @@ Administrator
     id="searchOrder"
     placeholder="Search Order...">
 
+
+<button
+    id="refreshOrdersBtn"
+    class="refresh-orders-btn"
+    type="button">
+
+    🔄 Refresh Orders
+
+</button>
+
 </div>
+
 
 <!-- ==========================================
      ORDER SUMMARY
@@ -120,61 +134,74 @@ Administrator
 
 <div class="order-summary">
 
-    <div class="summary-card" data-filter="all">
 
-        <h3>Total Orders</h3>
+<div
+    class="summary-card"
+    data-filter="all">
 
-        <p id="totalOrders">
-            0
-        </p>
+<h3>Total Orders</h3>
 
-    </div>
-
-
-    <div class="summary-card" data-filter="Pending">
-
-        <h3>Pending</h3>
-
-        <p id="pendingOrders">
-            0
-        </p>
-
-    </div>
-
-
-    <div class="summary-card" data-filter="Completed">
-
-        <h3>Completed</h3>
-
-        <p id="completedOrders">
-            0
-        </p>
-
-    </div>
-
-
-    <div class="summary-card" data-filter="Cancelled">
-
-        <h3>Cancelled</h3>
-
-        <p id="cancelledOrders">
-            0
-        </p>
-
-    </div>
-
-
-    <div class="summary-card" data-filter="all">
-
-        <h3>Total Value</h3>
-
-        <p id="totalOrderValue">
-            ₹0
-        </p>
-
-    </div>
+<p id="totalOrders">
+0
+</p>
 
 </div>
+
+
+<div
+    class="summary-card"
+    data-filter="Pending">
+
+<h3>Pending</h3>
+
+<p id="pendingOrders">
+0
+</p>
+
+</div>
+
+
+<div
+    class="summary-card"
+    data-filter="Completed">
+
+<h3>Completed</h3>
+
+<p id="completedOrders">
+0
+</p>
+
+</div>
+
+
+<div
+    class="summary-card"
+    data-filter="Cancelled">
+
+<h3>Cancelled</h3>
+
+<p id="cancelledOrders">
+0
+</p>
+
+</div>
+
+
+<div
+    class="summary-card"
+    data-filter="all">
+
+<h3>Total Value</h3>
+
+<p id="totalOrderValue">
+₹0
+</p>
+
+</div>
+
+
+</div>
+
 
 <!-- ==========================================
      MODULE - PAYMENT SUMMARY
@@ -182,69 +209,71 @@ Administrator
 
 <div class="payment-summary">
 
-    <div
-        class="payment-summary-card"
-        data-payment-filter="all">
 
-        <h3>All Payments</h3>
+<div
+    class="payment-summary-card"
+    data-payment-filter="all">
 
-        <p id="allPayments">
-            0
-        </p>
+<h3>All Payments</h3>
 
-    </div>
+<p id="allPayments">
+0
+</p>
 
-
-    <div
-        class="payment-summary-card"
-        data-payment-filter="Paid">
-
-        <h3>Paid</h3>
-
-        <p id="paidPayments">
-            0
-        </p>
-
-    </div>
+</div>
 
 
-    <div
-        class="payment-summary-card"
-        data-payment-filter="Pending">
+<div
+    class="payment-summary-card"
+    data-payment-filter="Paid">
 
-        <h3>Pending</h3>
+<h3>Paid</h3>
 
-        <p id="pendingPayments">
-            0
-        </p>
+<p id="paidPayments">
+0
+</p>
 
-    </div>
-
-
-    <div
-        class="payment-summary-card"
-        data-payment-filter="Failed">
-
-        <h3>Failed</h3>
-
-        <p id="failedPayments">
-            0
-        </p>
-
-    </div>
+</div>
 
 
-    <div
-        class="payment-summary-card"
-        data-payment-filter="revenue">
+<div
+    class="payment-summary-card"
+    data-payment-filter="Pending">
 
-        <h3>Paid Revenue</h3>
+<h3>Pending</h3>
 
-        <p id="paidRevenue">
-            ₹0
-        </p>
+<p id="pendingPayments">
+0
+</p>
 
-    </div>
+</div>
+
+
+<div
+    class="payment-summary-card"
+    data-payment-filter="Failed">
+
+<h3>Failed</h3>
+
+<p id="failedPayments">
+0
+</p>
+
+</div>
+
+
+<div
+    class="payment-summary-card"
+    data-payment-filter="revenue">
+
+<h3>Paid Revenue</h3>
+
+<p id="paidRevenue">
+₹0
+</p>
+
+</div>
+
 
 </div>
 
@@ -299,6 +328,7 @@ No orders found.
 
 </main>
 
+
 <!-- ==========================================
      ORDER DETAILS MODAL
 ========================================== -->
@@ -307,161 +337,176 @@ No orders found.
     id="orderDetailsModal"
     class="modal">
 
-    <div class="modal-content order-details-modal">
-
-        <!-- Close Button -->
-
-        <button
-            type="button"
-            class="close-order-modal">
-            &times;
-        </button>
+<div
+    class="modal-content order-details-modal">
 
 
-        <!-- Modal Header -->
+<!-- Close Button -->
 
-        <div class="order-modal-header">
+<button
+    type="button"
+    class="close-order-modal">
 
-            <h2>Order Details</h2>
+    &times;
 
-            <p>
-                Complete information about this order
-            </p>
-
-        </div>
+</button>
 
 
-        <!-- Order Information -->
+<!-- Modal Header -->
 
-        <div class="order-details-grid">
+<div class="order-modal-header">
 
+<h2>Order Details</h2>
 
-            <!-- Order ID -->
+<p>
+Complete information about this order
+</p>
 
-            <div class="order-detail-card">
-
-                <span>
-                    Order ID
-                </span>
-
-                <strong id="detailOrderId">
-                    -
-                </strong>
-
-            </div>
+</div>
 
 
-            <!-- Customer -->
+<!-- Order Information -->
 
-            <div class="order-detail-card">
-
-                <span>
-                    Customer
-                </span>
-
-                <strong id="detailCustomer">
-                    -
-                </strong>
-
-            </div>
+<div class="order-details-grid">
 
 
-            <!-- Product -->
-
-            <div class="order-detail-card">
-
-                <span>
-                    Product
-                </span>
-
-                <strong id="detailProduct">
-                    -
-                </strong>
-
-            </div>
-
-
-            <!-- Amount -->
-
-            <div class="order-detail-card">
-
-                <span>
-                    Amount
-                </span>
-
-                <strong
-                    id="detailAmount"
-                    class="order-detail-price">
-                    ₹0
-                </strong>
-
-            </div>
-
-
-            <!-- Payment Status -->
-
-            <div class="order-detail-card">
-
-                <span>
-                    Payment Status
-                </span>
-
-                <strong id="detailPayment">
-                    -
-                </strong>
-
-            </div>
-
-
-            <!-- Order Status -->
-
-            <div class="order-detail-card">
-
-                <span>
-                    Order Status
-                </span>
-
-                <strong id="detailStatus">
-                    -
-                </strong>
-
-            </div>
-
-        </div>
-
-        <!-- Created Date -->
+<!-- Order ID -->
 
 <div class="order-detail-card">
 
-    <span>
-        Created Date
-    </span>
+<span>
+Order ID
+</span>
 
-    <strong id="detailCreatedAt">
-        -
-    </strong>
-
-</div>
-
-
-        <!-- Footer -->
-
-        <div class="order-modal-footer">
-
-            <button
-                type="button"
-                class="close-order-modal secondary">
-                Close
-            </button>
-
-        </div>
-
-    </div>
+<strong id="detailOrderId">
+-
+</strong>
 
 </div>
 
 
-<script type="module" src="admin.js"></script>
+<!-- Customer -->
+
+<div class="order-detail-card">
+
+<span>
+Customer
+</span>
+
+<strong id="detailCustomer">
+-
+</strong>
+
+</div>
+
+
+<!-- Product -->
+
+<div class="order-detail-card">
+
+<span>
+Product
+</span>
+
+<strong id="detailProduct">
+-
+</strong>
+
+</div>
+
+
+<!-- Amount -->
+
+<div class="order-detail-card">
+
+<span>
+Amount
+</span>
+
+<strong
+    id="detailAmount"
+    class="order-detail-price">
+
+₹0
+
+</strong>
+
+</div>
+
+
+<!-- Payment Status -->
+
+<div class="order-detail-card">
+
+<span>
+Payment Status
+</span>
+
+<strong id="detailPayment">
+-
+</strong>
+
+</div>
+
+
+<!-- Order Status -->
+
+<div class="order-detail-card">
+
+<span>
+Order Status
+</span>
+
+<strong id="detailStatus">
+-
+</strong>
+
+</div>
+
+
+</div>
+
+
+<!-- Created Date -->
+
+<div class="order-detail-card">
+
+<span>
+Created Date
+</span>
+
+<strong id="detailCreatedAt">
+-
+</strong>
+
+</div>
+
+
+<!-- Footer -->
+
+<div class="order-modal-footer">
+
+<button
+    type="button"
+    class="close-order-modal secondary">
+
+    Close
+
+</button>
+
+</div>
+
+
+</div>
+
+</div>
+
+
+<script
+    type="module"
+    src="admin.js">
+</script>
+
 
 </body>
 
